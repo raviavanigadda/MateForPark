@@ -133,7 +133,51 @@ public class LoginActivity extends AppCompatActivity {
             }
         });*/
 
+        mLogin.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth.addAuthStateListener(firebaseAuthStateListener);
+                final FirebaseUser currentUser = mAuth.getCurrentUser();
 
+                final String email = mEmail.getText().toString();
+                final String password = mPassword.getText().toString();
+
+                //Log.d("Login Session:","Successful");
+
+                if (TextUtils.isEmpty(email)){
+                    mEmail.setError("Please enter your Email ID");
+                }
+                else if(TextUtils.isEmpty(password)){
+                    mPassword.setError("Please enter your Password");
+                }
+                else
+                {
+                    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(!task.isSuccessful()){
+                                Toast.makeText(LoginActivity.this, "Sign in Failed. Please try again.", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                Toast.makeText(LoginActivity.this, "Successfully signed in...", Toast.LENGTH_SHORT).show();
+                                userDashboard();
+                            }
+                        }
+                    });
+
+                }
+
+            }
+        });
+
+        mGoogleLogin.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setupGoogleLogin();
+                googleSignIn();
+            }
+        });
     }
 
     private void userDashboard() {
