@@ -101,6 +101,112 @@ public class RegisterActivity extends AppCompatActivity {
             }
         };
 
+        mSignup.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                userGender = mySpinner.getSelectedItem().toString().trim();
+
+                final String email = mUserEmail.getText().toString();
+                final String password = mUserPassword.getText().toString();
+                final String confirmPassword = mConfirmPassword.getText().toString();
+                final String name = mUserName.getText().toString();
+
+                final String age = mUserAge.getText().toString();
+                final String country = mCountryCodePicker.getSelectedCountryEnglishName();
+
+                if (TextUtils.isEmpty(name)) {
+                    mUserName.setError("Please enter your name");
+                }
+                else if(TextUtils.isEmpty(email))
+                {
+                    mUserEmail.setError("Please enter your Email ID");
+                }
+                else if (TextUtils.isEmpty(password)) {
+                    mUserPassword.setError("Please enter your password");
+                }
+
+                else if(TextUtils.isEmpty(confirmPassword)){
+                    mConfirmPassword.setError("Please confirm your password");
+                }
+
+                else if(!(TextUtils.isEmpty(confirmPassword))&&(!confirmPassword.equals(password))){
+                    mConfirmPassword.setError("Passwords do not match!");
+                }
+
+                else if(password.length() <6){
+                    mUserPassword.setError("Password length is minimum 6 characters.");
+                }
+
+                else if(TextUtils.isEmpty(age)){
+                    mUserAge.setError("Please enter your age");
+                }
+
+                else if(!TextUtils.isEmpty(age) && (Integer.parseInt(age) < 18 )||(Integer.parseInt(age) == 0)){
+                    mUserAge.setError("This app is only for 18 and above");
+                }
+
+                else if(userGender.equals("Do not specify"))
+                {
+                    Toast.makeText(RegisterActivity.this, "Please select your gender", Toast.LENGTH_SHORT).show();
+                }
+
+                else {
+                    checkEmail(email,mUserEmail);
+
+                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            if(task.isSuccessful()){
+
+                                String userId = mAuth.getCurrentUser().getUid();
+                                DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+
+                                //To store the user information easily we use hashmaps
+                                Map userInfo = new HashMap<>();
+
+                                userInfo.put("name", name);
+                                userInfo.put("email", email);
+                                userInfo.put("gender", userGender);
+                                userInfo.put("age", age);
+                                userInfo.put("country", country);
+                                userInfo.put("photo","default");
+
+                                currentUserDb.updateChildren(userInfo);
+
+                                Toast.makeText(RegisterActivity.this, "Registration Successful. Please wait...", Toast.LENGTH_SHORT).show();
+                                clearEditTextFields();
+
+                                String flag = "false";
+                                final Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+
+                                //Create a bundle
+                                Bundle b = new Bundle();
+
+                                //add data to bundle
+                                b.putString("flag",flag);
+                                intent.putExtras(b);
+
+                                new MyTask().execute();
+                                mAuth.signOut();
+                                startActivity(intent);
+                                finish();
+
+                   /* handler.postDelayed(new Runnable() {
+                       @Override
+                       public void run() {
+                           // Do something after 3s = 3000ms
+
+                       }
+                   }, 4000);*/
+
+                            }
+                        }
+                    });
+                }
+            }
+        });
        //mSignup.setVisibility(View.VISIBLE);
 
         mBack.setOnClickListener(new OnClickListener() {

@@ -150,8 +150,7 @@ public class LoginActivity extends AppCompatActivity {
                 else if(TextUtils.isEmpty(password)){
                     mPassword.setError("Please enter your Password");
                 }
-                else
-                {
+                else{
                     mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
