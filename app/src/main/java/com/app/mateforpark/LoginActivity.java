@@ -171,7 +171,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-         mGoogleLogin.setOnClickListener(new OnClickListener() {
+        mGoogleLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 setupGoogleLogin();

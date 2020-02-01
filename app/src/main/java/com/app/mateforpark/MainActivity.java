@@ -71,5 +71,35 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void setupGoogleLogin(){
+
+        //GoogleSignInOptions is options used to configure the GOOGLE_SIGN_IN_API.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+    }
+
+    //First logout from firebase then logout from gmail and then call finish() to stop the activity.
+    public void logout(View view) {
+        setupGoogleLogin();
+
+        //firebase signout
+        mAuth.signOut();
+
+        //gmail signout
+        mGoogleSignInClient.signOut();
+
+        Toast.makeText(MainActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+
+        startActivity(intent);
+        finish();
+
+    }
+
 
 }
