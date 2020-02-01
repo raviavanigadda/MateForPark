@@ -103,9 +103,26 @@ public class RegisterActivity extends AppCompatActivity {
 
        //mSignup.setVisibility(View.VISIBLE);
 
+        mBack.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
+                return;
+            }
+        });
+
 
     }
 
+    private void clearEditTextFields() {
+        mUserName.getText().clear();
+        mUserPassword.getText().clear();
+        mConfirmPassword.getText().clear();
+        mUserAge.getText().clear();
+        mUserEmail.getText().clear();
+    }
 
     private class MyTask extends AsyncTask<Void, Void, Void> {
 
