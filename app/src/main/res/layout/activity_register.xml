@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:id="@+id/progressBarHolder"
+        android:alpha="0.4"
+        android:background="#000000">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            style="@android:style/Widget.Holo.ProgressBar.Large"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SIGN UP"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:textSize="25sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10sp">
+
+            <TextView
+                android:layout_width="40sp"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:layout_weight="0.2"
+
+                />
+
+            <EditText
+                android:layout_width="60sp"
+                android:layout_height="wrap_content"
+                android:hint="Enter your Name"
+                android:focusable="auto"
+                android:layout_weight="0.8"
+                android:id="@+id/username"
+                android:layout_marginLeft="20dp"
+                android:maxLength="20"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10sp">
+            <TextView
+                android:layout_width="40sp"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:layout_weight="0.2" />
+
+            <EditText
+                android:layout_width="60sp"
+                android:layout_height="wrap_content"
+                android:hint="Enter your Email ID"
+                android:focusable="auto"
+                android:layout_weight="0.8"
+                android:id="@+id/useremail"
+                android:layout_marginLeft="20dp"
+                android:inputType="textEmailAddress"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10sp">
+            <TextView
+                android:layout_width="40sp"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:gravity="start"
+                android:layout_weight="0.2"
+               />
+
+            <EditText
+                android:layout_marginLeft="20dp"
+                android:layout_width="60sp"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:focusable="auto"
+                android:layout_weight="0.8"
+                android:inputType="textPassword"
+                android:id="@+id/userpassword"
+                android:maxLength="20"
+               />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10sp">
+            <TextView
+                android:layout_width="40sp"
+                android:layout_height="wrap_content"
+                android:text="Confirm Password"
+                android:layout_gravity="center_vertical"
+                android:gravity="start"
+                android:layout_weight="0.2"
+                />
+
+            <EditText
+                android:layout_marginLeft="20dp"
+                android:layout_width="60sp"
+                android:layout_height="wrap_content"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:focusable="auto"
+                android:layout_weight="0.8"
+                android:id="@+id/confirmpassword"
+                android:maxLength="20"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10sp">
+            <TextView
+                android:layout_width="40sp"
+                android:layout_height="wrap_content"
+                android:text="Country"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.2" />
+
+            <com.hbb20.CountryCodePicker
+                android:layout_marginLeft="20dp"
+                app:ccp_textGravity="RIGHT"
+                android:id="@+id/ccp"
+                android:layout_width="60sp"
+                app:ccp_showFullName="true"
+                app:ccp_showPhoneCode="false"
+                app:ccp_showNameCode="false"
+                android:focusable="auto"
+                android:layout_height="wrap_content"
+                android:maxLength="2"
+                android:layout_weight="0.8"
+                app:ccp_defaultNameCode="CA" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10sp">
+            <TextView
+                android:layout_width="40sp"
+                android:layout_height="wrap_content"
+                android:text="Age"
+                android:gravity="start"
+                android:layout_weight="0.2" />
+
+            <EditText
+                android:layout_marginLeft="20dp"
+                android:layout_width="60sp"
+                android:layout_height="wrap_content"
+                android:hint="Enter your Age"
+                android:focusable="auto"
+                android:layout_weight="0.8"
+                android:id="@+id/userage"
+                android:inputType="number"
+                android:maxLength="2"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10sp">
+            <TextView
+                android:layout_width="40sp"
+                android:layout_height="wrap_content"
+                android:text="Gender"
+                android:gravity="start"
+                android:layout_weight="0.2"
+                android:layout_gravity="center_vertical"/>
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="35dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:id="@+id/spinner"
+                android:layout_gravity="end"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10sp"
+            android:gravity="center">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign up"
+                android:id="@+id/signup"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"/>
+
+            <Button
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="back"
+                android:id="@+id/back"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

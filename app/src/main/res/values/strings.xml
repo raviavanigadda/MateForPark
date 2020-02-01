@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">MateForPark</string>
+    <string name="app_name">Mateforparktest</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string-array name="gender">
+        <item>Do not specify</item>
+        <item>Female</item>
+        <item>Male</item>
+        <item>Other</item>
+    </string-array>
 </resources>
