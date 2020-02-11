@@ -1,5 +1,9 @@
 package com.app.mateforpark;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,10 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -62,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     //AuthStateListener is called when there is a change in the authentication state
-    private AuthStateListener firebaseAuthStateListener;
+    private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
     //Database for Images
     private FirebaseStorage storage;
@@ -110,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 if(user != null && flag == "true"){
-                   userDashboard();
+                    userDashboard();
                 }
             }
         };
@@ -124,14 +125,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-       /* mForgetPassword.setOnClickListener(new OnClickListener() {
+        mForgetPassword.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this,ForgetPasswordActivity.class);
                 startActivity(intent);
                 finish();
             }
-        });*/
+        });
 
         mLogin.setOnClickListener(new OnClickListener() {
             @Override
@@ -150,7 +151,8 @@ public class LoginActivity extends AppCompatActivity {
                 else if(TextUtils.isEmpty(password)){
                     mPassword.setError("Please enter your Password");
                 }
-                else{
+                else
+                {
                     mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -245,28 +247,6 @@ public class LoginActivity extends AppCompatActivity {
 
             Toast.makeText(LoginActivity.this, "Signed in Successfully...", Toast.LENGTH_SHORT).show();
 
-
-            /*mAuth.fetchSignInMethodsForEmail(account.getEmail()).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                @Override
-                public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-
-                    boolean check = !task.getResult().getSignInMethods().isEmpty();
-
-                    //Check for first time gmail login
-                    if(!check)
-                    {
-                        Toast.makeText(LoginActivity.this, "Signed in Successfully...", Toast.LENGTH_SHORT).show();
-                        FirebaseGoogleAuth(account);
-                    }
-                    //Check for multiple times gmail login
-
-                    else
-                    {
-                        Toast.makeText(LoginActivity.this, "Email already exists! Please login or click forget password to reset.", Toast.LENGTH_SHORT).show();
-                        mGoogleSignInClient.signOut();
-                    }
-                }
-            });*/
         }
         catch (ApiException e)
         {
@@ -313,51 +293,51 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser fUser) {
 
 
-            final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
 
-            if (account != null) {
+        if (account != null) {
 
-                final String personEmail = account.getEmail();
-                final String personName = account.getDisplayName();
-                final Uri personPhoto = account.getPhotoUrl();
-                final String userId = mAuth.getCurrentUser().getUid();
+            final String personEmail = account.getEmail();
+            final String personName = account.getDisplayName();
+            final Uri personPhoto = account.getPhotoUrl();
+            final String userId = mAuth.getCurrentUser().getUid();
 
-                DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-                rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.hasChild("Users/"+userId)){
-                            //Toast.makeText(LoginActivity.this, "Email already exists! Please login or click forget password to reset.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        else
-                        {
-                            //create Database
-                            final DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
-
-                            //To store the user information easily we use hashmaps
-                            final Map userInfo = new HashMap<>();
-
-                            userInfo.put("name", personName);
-                            userInfo.put("email", personEmail);
-                            userInfo.put("photo", personPhoto.toString());
-                            userInfo.put("age", "default");
-                            userInfo.put("gender", gender);
-                            userInfo.put("country", country);
-
-                            currentUserDb.updateChildren(userInfo);
-                        }
+            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+            rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.hasChild("Users/"+userId)){
+                        //Toast.makeText(LoginActivity.this, "Email already exists! Please login or click forget password to reset.", Toast.LENGTH_SHORT).show();
+                        return;
                     }
+                    else
+                    {
+                        //create Database
+                        final DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        //To store the user information easily we use hashmaps
+                        final Map userInfo = new HashMap<>();
 
+                        userInfo.put("name", personName);
+                        userInfo.put("email", personEmail);
+                        userInfo.put("photo", personPhoto.toString());
+                        userInfo.put("age", null);
+                        userInfo.put("gender", gender);
+                        userInfo.put("country", country);
+
+                        currentUserDb.updateChildren(userInfo);
                     }
-                });
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
 
 
 
-            }
+        }
     }
 
 }
