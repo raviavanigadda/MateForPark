@@ -250,26 +250,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    public void checkEmail(String email, final EditText mUserEmail){
-        mAuth.fetchSignInMethodsForEmail(this.mUserEmail.getText().toString())
-                .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-
-                        boolean check = !task.getResult().getSignInMethods().isEmpty();
-                        if(!check)
-                        {
-                            Log.d("Message","Email does not exist. You can proceed to create a new one.");
-
-                        }
-                        else
-                        {
-                            mUserEmail.setError("Email already exists! Please try another email address.");
-                        }
-                    }
-                });
-    }
-
     private class MyTask extends AsyncTask<Void, Void, Void> {
 
         @Override
