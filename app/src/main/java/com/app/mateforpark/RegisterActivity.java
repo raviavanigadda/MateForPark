@@ -1,5 +1,8 @@
 package com.app.mateforpark;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,15 +12,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
+
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -42,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
     CountryCodePicker mCountryCodePicker;
 
     FirebaseAuth mAuth;
-    private AuthStateListener firebaseAuthStateListener;
+    private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
     Handler handler;
 
     //For progressbar after clicking signup
@@ -62,6 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
         mConfirmPassword = findViewById(R.id.confirmpassword);
 
         mUserEmail = findViewById(R.id.useremail);
+        //mRadioGroup = findViewById(R.id.radioGroup);
         mUserAge = findViewById(R.id.userage);
         mCountryCodePicker = (CountryCodePicker) findViewById(R.id.ccp);
 
@@ -71,10 +75,8 @@ public class RegisterActivity extends AppCompatActivity {
         final Spinner mySpinner = findViewById(R.id.spinner);
 
         //create data to show inside spinner
-       final ArrayAdapter<String> myAdapter = new ArrayAdapter<>(RegisterActivity.this,
+        final ArrayAdapter<String> myAdapter = new ArrayAdapter<>(RegisterActivity.this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.gender));
-
-
 
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -100,6 +102,8 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         };
+
+        //mSignup.setVisibility(View.VISIBLE);
 
         mSignup.setOnClickListener(new OnClickListener() {
             @Override
@@ -193,13 +197,13 @@ public class RegisterActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
 
-                   /* handler.postDelayed(new Runnable() {
-                       @Override
-                       public void run() {
-                           // Do something after 3s = 3000ms
+                           /* handler.postDelayed(new Runnable() {
+                               @Override
+                               public void run() {
+                                   // Do something after 3s = 3000ms
 
-                       }
-                   }, 4000);*/
+                               }
+                           }, 4000);*/
 
                             }
                         }
@@ -207,7 +211,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
-       //mSignup.setVisibility(View.VISIBLE);
 
         mBack.setOnClickListener(new OnClickListener() {
             @Override
@@ -218,8 +221,6 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
         });
-
-
     }
     public void checkEmail(String email, final EditText mUserEmail){
         mAuth.fetchSignInMethodsForEmail(this.mUserEmail.getText().toString())
@@ -248,6 +249,7 @@ public class RegisterActivity extends AppCompatActivity {
         mUserEmail.getText().clear();
     }
 
+
     private class MyTask extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -273,7 +275,7 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                    TimeUnit.SECONDS.sleep(3);
+                TimeUnit.SECONDS.sleep(3);
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
