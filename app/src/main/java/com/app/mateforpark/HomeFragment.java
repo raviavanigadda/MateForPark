@@ -31,25 +31,32 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    List<Cards> rowItems;
     private Cards cardData[];
     private CustomArrayAdapter arrayAdapter;
     private int i;
+
     private FirebaseAuth mAuth;
+
     private String currentUId;
     private String userGender;
     private String otheruserGender;
+
     private DatabaseReference usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
 
-    public HomeFragment() {
-        // Required empty public constructor
-    }
+    List<Cards> rowItems;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
+
+
+    public HomeFragment() {
+        // Required empty public constructor
+    }
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
