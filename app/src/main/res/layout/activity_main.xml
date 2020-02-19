@@ -12,47 +12,17 @@
         android:layout_height="wrap_content"
         layout="@layout/custom_toolbar" />
 
-    <LinearLayout
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sign out"
-            android:onClick="logout"
-            android:id="@+id/signout"
-            android:layout_weight="0.5"
-            />
-
-
-        <Button
-            android:layout_weight="0.5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Settings"
-            android:id="@+id/settings"
-
-            />
-
-    </LinearLayout>
-
+        android:id="@+id/container"
+        >
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/container"
-            android:layout_above="@+id/navigationView">
-
-
-
-        </FrameLayout>
+        android:layout_height="wrap_content">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigationView"
@@ -63,10 +33,11 @@
             app:itemHorizontalTranslationEnabled="true"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/bottom_nav"
-
             />
 
     </RelativeLayout>
+
+
 
 
 
