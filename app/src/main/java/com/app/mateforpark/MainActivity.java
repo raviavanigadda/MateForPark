@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -13,6 +14,13 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.app.mateforpark.Fragments.AccountFragment;
+import com.app.mateforpark.Fragments.ChatScreenFragment.ChatScreenFragment;
+import com.app.mateforpark.Fragments.ExploreFragment;
+import com.app.mateforpark.Fragments.HomeFragment;
+import com.app.mateforpark.Fragments.Matches.MatchesFragment;
+import com.app.mateforpark.LoginActivity;
+import com.app.mateforpark.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -26,7 +34,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button mSignOut,mUserSettings;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
     private DatabaseReference usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -42,13 +49,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         BottomNavigationView navigation = findViewById(R.id.navigationView);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         //set home as main screen
-        navigation.setSelectedItemId(R.id.chat);
+        navigation.setSelectedItemId(R.id.home);
 
         // loadFragment(new HomeFragment());
-        mSignOut = findViewById(R.id.signout);
-        mUserSettings = findViewById(R.id.settings);
 
 
         //Firebase Connections & id retrieval
@@ -61,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if(user != null){
-                    Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -69,36 +75,44 @@ public class MainActivity extends AppCompatActivity {
         };
 
 
-    }
-
-    public void setupGoogleLogin(){
-
-        //GoogleSignInOptions is options used to configure the GOOGLE_SIGN_IN_API.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
     }
 
-    //First logout from firebase then logout from gmail and then call finish() to stop the activity.
-    public void logout(View view) {
-        setupGoogleLogin();
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-        //firebase signout
-        mAuth.signOut();
+            switch(menuItem.getItemId()){
+                case R.id.home:
+                    loadFragment(new HomeFragment());
+                    return true;
+                case R.id.chat:
+                    loadFragment(new ChatScreenFragment());
+                    return true;
+                case R.id.explore:
+                    loadFragment(new ExploreFragment());
+                    return true;
+                case R.id.Account:
+                    loadFragment(new AccountFragment());
+                    return true;
+                case R.id.matches:
+                    loadFragment(new MatchesFragment());
+                    return true;
+            }
 
-        //gmail signout
-        mGoogleSignInClient.signOut();
+            return false;
+        }
+    };
 
-        Toast.makeText(MainActivity.this, "Logged out successfully", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
 
-        startActivity(intent);
-        finish();
-
+    //To load fragments when pressed in bottom navigation bar
+    private void loadFragment(Fragment fragment) {
+        // load fragment
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
 

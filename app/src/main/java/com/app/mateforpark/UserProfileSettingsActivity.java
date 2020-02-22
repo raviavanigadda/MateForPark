@@ -1,5 +1,9 @@
 package com.app.mateforpark;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,17 +13,15 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,14 +49,14 @@ public class UserProfileSettingsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mUserDatabase;
 
-    private EditText mUserName, mUserAge, mProfileImageUrl, mUserGender, mUserCountry, mUserEmail;
+    private EditText mUserName, mUserAge, mProfileImageUrl , mUserEmail;
     private Button mSaveChanges;
-    private TextView mBack;
+    private TextView mBack,mUserCountry, mUserGender;
 
     private Uri resultUri;
     private ImageView mProfileImage;
 
-    private String usersId, usersName, usersAge, usersImageUrl, usersGender, usersCountry, usersEmail;
+    private String usersId, usersName, usersAge, usersImageUrl, usersGender, usersCountry, usersEmail, usersCountryCode;
     CountryCodePicker mCountryCodePicker;
 
     private Spinner mySpinner;
@@ -68,7 +70,7 @@ public class UserProfileSettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile_settings);
 
         mUserName = findViewById(R.id.username);
-        mUserCountry = findViewById(R.id.country);
+        mUserCountry = findViewById(R.id.et_country);
         mUserEmail = findViewById(R.id.useremail);
         mUserAge = findViewById(R.id.userage);
         mUserGender = findViewById(R.id.gender);
@@ -141,20 +143,29 @@ public class UserProfileSettingsActivity extends AppCompatActivity {
         usersGender = mUserGender.getText().toString();
 
         final String country = mCountryCodePicker.getSelectedCountryEnglishName();
+        final String userCountryCode = mCountryCodePicker.getSelectedCountryNameCode();
         final String userGender = mySpinner.getSelectedItem().toString().trim();
 
         Map userInfo = new HashMap();
+
         userInfo.put("name", usersName);
+
         if (TextUtils.isEmpty(usersAge) || Integer.parseInt(usersAge) < 18 || (Integer.parseInt(usersAge) == 0)) {
             mUserAge.setError("Please enter valid age");
+
             Toast.makeText(this, "Please fill empty fields to complete your profile.", Toast.LENGTH_SHORT).show();
             return;
         } else {
             userInfo.put("age", usersAge);
         }
 
-        userInfo.put("gender", userGender);
+        if(!userGender.equals("Do not specify")) {
+            userInfo.put("gender", userGender);
+        }
+
+
         userInfo.put("country", country);
+        userInfo.put("countrycode",userCountryCode);
 
 
         mUserDatabase.updateChildren(userInfo);
@@ -249,19 +260,20 @@ public class UserProfileSettingsActivity extends AppCompatActivity {
                     if (map.get("gender") != null) {
                         usersGender = map.get("gender").toString();
 
-
                         if (!usersGender.equals("Do not specify")) {
                             mUserGender.setEnabled(false);
                             mUserGender.setFocusable(false);
                             mySpinner.setVisibility(View.GONE);
+
                             mUserGender.setText(usersGender);
 
                         } else {
+
                             mUserGender.setVisibility(View.GONE);
-                            mUserGender.setText(userGender);
                         }
 
                     }
+
                     if (map.get("email") != null) {
                         usersEmail = map.get("email").toString();
                         mUserEmail.setText(usersEmail);
@@ -270,13 +282,38 @@ public class UserProfileSettingsActivity extends AppCompatActivity {
                     }
 
                     if (map.get("country") != null) {
-                        usersCountry = map.get("country").toString();
-                        mUserCountry.setVisibility(View.GONE);
+
+                        if(map.get("countrycode")!=null)
+                        {
+                            usersCountry = map.get("country").toString();
+                            usersCountryCode = map.get("countrycode").toString();
+
+                            mUserCountry.setText(usersCountry);
+                            mCountryCodePicker.setVisibility(View.GONE);
+
+                            mUserCountry.setOnClickListener(new OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    mCountryCodePicker.setVisibility(View.VISIBLE);
+                                    Toast.makeText(UserProfileSettingsActivity.this, usersCountryCode, Toast.LENGTH_SHORT).show();
+                                    mCountryCodePicker.setDefaultCountryUsingNameCode(usersCountryCode);
+                                    mCountryCodePicker.resetToDefaultCountry();
+                                    mUserCountry.setVisibility(View.GONE);
+                                }
+                            });
+
+                        }
+
+
+
+
+
                     }
 
                     Glide.clear(mProfileImage);
 
                     if (map.get("photo") != null) {
+
                         usersImageUrl = map.get("photo").toString();
 
                         switch (usersImageUrl) {

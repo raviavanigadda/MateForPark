@@ -7,12 +7,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button mLogin;
     private EditText mEmail,mPassword;
-    TextView mRegister, mForgetPassword;
+    TextView mRegister, mForgetPassword, mTitle, mSubtitle;
 
     //A client for interacting with the Google Sign In API.
     private GoogleSignInClient mGoogleSignInClient;
@@ -69,7 +71,17 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
-
+    RelativeLayout rellay1, rellay2;
+    Handler handler = new Handler();
+    Runnable runnable= new Runnable() {
+        @Override
+        public void run() {
+            rellay1.setVisibility(View.VISIBLE);
+            rellay2.setVisibility(View.VISIBLE);
+            mTitle.setVisibility(View.GONE);
+            mSubtitle.setVisibility(View.GONE);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +91,8 @@ public class LoginActivity extends AppCompatActivity {
         //Assigning the xml ids to the variables
         mLogin = findViewById(R.id.login);
         mGoogleLogin = findViewById(R.id.googlelogin);
+
+        setGoogleButtonText(mGoogleLogin,"Sign in");
         mEmail = findViewById(R.id.email);
         mPassword = findViewById(R.id.password);
         mRegister = findViewById(R.id.register);
@@ -90,6 +104,16 @@ public class LoginActivity extends AppCompatActivity {
         // get the Firebase  storage reference
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
+        //for Splash screen
+        rellay1 = findViewById(R.id.rellay1);
+        rellay2 = findViewById(R.id.rellay2);
+
+        //Title and subtitle
+        mTitle = findViewById(R.id.maintitle);
+        mSubtitle = findViewById(R.id.subtitle);
+
+        handler.postDelayed(runnable, 2500);
 
 
         //OnAuthStateChanged gets invoked in the UI thread on changes in the authentication state
@@ -225,6 +249,20 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    //set text inside google button
+    protected void setGoogleButtonText(SignInButton signInButton, String buttonText){
+        for (int i=0; i < signInButton.getChildCount(); i++){
+            View v = signInButton.getChildAt(i);
+
+            if(v instanceof TextView){
+                TextView tv = (TextView) v;
+                tv.setText(buttonText);
+                return;
+            }
+        }
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
@@ -247,6 +285,28 @@ public class LoginActivity extends AppCompatActivity {
 
             Toast.makeText(LoginActivity.this, "Signed in Successfully...", Toast.LENGTH_SHORT).show();
 
+
+            /*mAuth.fetchSignInMethodsForEmail(account.getEmail()).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                @Override
+                public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+
+                    boolean check = !task.getResult().getSignInMethods().isEmpty();
+
+                    //Check for first time gmail login
+                    if(!check)
+                    {
+                        Toast.makeText(LoginActivity.this, "Signed in Successfully...", Toast.LENGTH_SHORT).show();
+                        FirebaseGoogleAuth(account);
+                    }
+                    //Check for multiple times gmail login
+
+                    else
+                    {
+                        Toast.makeText(LoginActivity.this, "Email already exists! Please login or click forget password to reset.", Toast.LENGTH_SHORT).show();
+                        mGoogleSignInClient.signOut();
+                    }
+                }
+            });*/
         }
         catch (ApiException e)
         {

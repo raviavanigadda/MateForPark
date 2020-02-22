@@ -24,7 +24,6 @@
             android:layout_marginBottom="30dp"/>
 
 
-
         <androidx.cardview.widget.CardView
             android:layout_width="105dp"
             android:layout_height="105dp"
@@ -150,13 +149,15 @@
                     android:layout_gravity="center"
                     android:textColor="@color/white"/>
 
-                <EditText
+                <TextView
+                    android:layout_gravity="center_vertical"
                     android:layout_width="60sp"
                     android:layout_height="wrap_content"
                     android:hint="Country"
                     android:focusable="auto"
                     android:layout_weight="0.8"
-                    android:id="@+id/country"
+                    android:textSize="18sp"
+                    android:id="@+id/et_country"
                     android:layout_marginLeft="20dp"
                     android:maxLength="20"
                     android:textColor="@color/white"
@@ -174,7 +175,7 @@
                     android:layout_height="wrap_content"
                     android:maxLength="2"
                     android:layout_weight="0.8"
-                    app:ccp_defaultNameCode="CA"
+                    app:ccp_countryPreference="US,CA,AU,IN"
                     app:ccp_contentColor="@color/white"/>
 
             </LinearLayout>
@@ -193,15 +194,17 @@
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/white"/>
 
-                <EditText
+                <TextView
                     android:layout_width="60sp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:hint="Gender"
                     android:focusable="auto"
                     android:layout_weight="0.8"
                     android:id="@+id/gender"
                     android:layout_marginLeft="20dp"
                     android:maxLength="20"
+                    android:textSize="18sp"
                     android:textColor="@color/white"
                     />
 

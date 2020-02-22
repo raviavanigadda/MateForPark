@@ -1,4 +1,4 @@
-package com.app.mateforpark.Cards;
+package com.app.mateforpark.Fragments.Cards;
 
 public class Cards {
 
@@ -10,6 +10,8 @@ public class Cards {
         this.userName = userName;
         this.photoUrl = photoUrl;
     }
+
+
 
     private String photoUrl;
     private String userAge;
