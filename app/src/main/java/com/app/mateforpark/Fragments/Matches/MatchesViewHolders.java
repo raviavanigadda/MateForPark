@@ -7,8 +7,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.app.mateparktest.R;
-import com.app.mateparktest.UserProfile;
+
+import com.app.mateforpark.R;
+import com.app.mateforpark.UserProfile;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

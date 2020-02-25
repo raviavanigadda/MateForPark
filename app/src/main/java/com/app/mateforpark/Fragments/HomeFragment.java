@@ -9,9 +9,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.app.mateparktest.Fragments.Cards.Cards;
-import com.app.mateparktest.Fragments.Cards.CustomArrayAdapter;
-import com.app.mateparktest.R;
+import com.app.mateforpark.Fragments.Cards.Cards;
+import com.app.mateforpark.Fragments.Cards.CustomArrayAdapter;
+import com.app.mateforpark.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;

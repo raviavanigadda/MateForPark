@@ -1,9 +1,5 @@
 package com.app.mateforpark;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,7 +28,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +38,10 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -65,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     //AuthStateListener is called when there is a change in the authentication state
-    private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
+    private AuthStateListener firebaseAuthStateListener;
 
     //Database for Images
     private FirebaseStorage storage;
@@ -135,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 if(user != null && flag == "true"){
-                    userDashboard();
+                   userDashboard();
                 }
             }
         };
@@ -188,8 +187,8 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(LoginActivity.this, "Successfully signed in...", Toast.LENGTH_SHORT).show();
                                 userDashboard();
                             }
-                        }
-                    });
+                            }
+                        });
 
                 }
 
@@ -353,51 +352,51 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser fUser) {
 
 
-        final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+            final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
 
-        if (account != null) {
+            if (account != null) {
 
-            final String personEmail = account.getEmail();
-            final String personName = account.getDisplayName();
-            final Uri personPhoto = account.getPhotoUrl();
-            final String userId = mAuth.getCurrentUser().getUid();
+                final String personEmail = account.getEmail();
+                final String personName = account.getDisplayName();
+                final Uri personPhoto = account.getPhotoUrl();
+                final String userId = mAuth.getCurrentUser().getUid();
 
-            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-            rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.hasChild("Users/"+userId)){
-                        //Toast.makeText(LoginActivity.this, "Email already exists! Please login or click forget password to reset.", Toast.LENGTH_SHORT).show();
-                        return;
+                DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+                rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.hasChild("Users/"+userId)){
+                            //Toast.makeText(LoginActivity.this, "Email already exists! Please login or click forget password to reset.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else
+                        {
+                            //create Database
+                            final DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+
+                            //To store the user information easily we use hashmaps
+                            final Map userInfo = new HashMap<>();
+
+                            userInfo.put("name", personName);
+                            userInfo.put("email", personEmail);
+                            userInfo.put("photo", personPhoto.toString());
+                            userInfo.put("age", null);
+                            userInfo.put("gender", gender);
+                            userInfo.put("country", country);
+
+                            currentUserDb.updateChildren(userInfo);
+                        }
                     }
-                    else
-                    {
-                        //create Database
-                        final DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
 
-                        //To store the user information easily we use hashmaps
-                        final Map userInfo = new HashMap<>();
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        userInfo.put("name", personName);
-                        userInfo.put("email", personEmail);
-                        userInfo.put("photo", personPhoto.toString());
-                        userInfo.put("age", null);
-                        userInfo.put("gender", gender);
-                        userInfo.put("country", country);
-
-                        currentUserDb.updateChildren(userInfo);
                     }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
+                });
 
 
 
-        }
+            }
     }
 
 }

@@ -1,80 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:background="@drawable/grad_bg">
+android:orientation="vertical" android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:animateLayoutChanges="true"
+android:background="@drawable/grad_bg">
 
-    <RelativeLayout
-        android:layout_marginRight="40dp"
-        android:layout_marginLeft="40dp"
+<RelativeLayout
+    android:layout_marginRight="40dp"
+    android:layout_marginLeft="40dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logocouplewhite"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:id="@+id/logo"
+        />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:text="Mate For Park"
+        android:layout_toRightOf="@id/logo"
+        android:textSize="30sp"
+        android:layout_marginTop="15dp"
+        android:visibility="visible"
+        android:fontFamily="sans-serif-medium"
+        android:id="@+id/maintitle"
+        android:textColor="@color/white"/>
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/logocouplewhite"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:id="@+id/logo"
-            />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nature in a cup"
+        android:layout_toRightOf="@id/logo"
+        android:layout_below="@id/maintitle"
+        android:textSize="20sp"
+        android:layout_marginLeft="20dp"
+        android:visibility="visible"
+        android:fontFamily="sans-serif-light"
+        android:id="@+id/subtitle"
+        android:textColor="@color/white"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo"
+        android:id="@+id/rellay1"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mate For Park"
-            android:layout_toRightOf="@id/logo"
+            android:text="Login"
+            android:id="@+id/loginText"
             android:textSize="30sp"
-            android:layout_marginTop="15dp"
-            android:visibility="visible"
+            android:textColor="@color/white"
             android:fontFamily="sans-serif-medium"
-            android:id="@+id/maintitle"
-            android:textColor="@color/white"/>
+            android:layout_marginTop="20dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nature in a cup"
-            android:layout_toRightOf="@id/logo"
-            android:layout_below="@id/maintitle"
-            android:textSize="20sp"
-            android:layout_marginLeft="20dp"
-            android:visibility="visible"
-            android:fontFamily="sans-serif-light"
-            android:id="@+id/subtitle"
-            android:textColor="@color/white"/>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/logo"
-            android:id="@+id/rellay1"
-            android:visibility="gone">
+            android:layout_below="@+id/loginText"
+            android:orientation="vertical"
+            android:id="@+id/linear1"
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Login"
-                android:id="@+id/loginText"
-                android:textSize="30sp"
+                android:text="Email ID"
+                android:textAllCaps="true"
+                android:textSize="15sp"
                 android:textColor="@color/white"
-                android:fontFamily="sans-serif-medium"
-                android:layout_marginTop="20dp" />
+                android:fontFamily="sans-serif-light"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textSize="15dp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:background="@drawable/et_bg"
+                android:fontFamily="sans-serif-light"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:id="@+id/email"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/loginText"
-                android:orientation="vertical"
-                android:id="@+id/linear1"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Email ID"
+                    android:text="Password"
                     android:textAllCaps="true"
                     android:textSize="15sp"
                     android:textColor="@color/white"
@@ -90,113 +117,86 @@
                     android:fontFamily="sans-serif-light"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:id="@+id/email"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Password"
-                        android:textAllCaps="true"
-                        android:textSize="15sp"
-                        android:textColor="@color/white"
-                        android:fontFamily="sans-serif-light"/>
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:textSize="15dp"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/white"
-                        android:background="@drawable/et_bg"
-                        android:fontFamily="sans-serif-light"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:id="@+id/password"
-                        android:inputType="textPassword"/>
-
-                </LinearLayout>
+                    android:id="@+id/password"
+                    android:inputType="textPassword"/>
 
             </LinearLayout>
 
-            <Button
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:layout_below="@id/linear1"
-                android:layout_marginTop="50dp"
-                android:text="Login"
-                android:id="@+id/login"
-                android:textAllCaps="false"
-                android:background="@drawable/button_bg"
-                android:textColor="@color/white"
-                android:fontFamily="sans-serif-medium"
+        </LinearLayout>
 
-                android:layout_centerHorizontal="true"
-                android:textSize="16sp"
-                />
-
-            <com.google.android.gms.common.SignInButton
-                android:layout_width="160dp"
-                android:layout_height="50dp"
-                android:id="@+id/googlelogin"
-                android:layout_below="@+id/login"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="15dp"
-
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="16dp"/>
-
-            </com.google.android.gms.common.SignInButton>
-
-
-
-        </RelativeLayout>
-
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/rellay2"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
+        <Button
+            android:layout_width="150dp"
             android:layout_height="40dp"
+            android:layout_below="@id/linear1"
             android:layout_marginTop="50dp"
-            android:text="Sign up"
-            android:textAllCaps="true"
+            android:text="Login"
+            android:id="@+id/login"
+            android:textAllCaps="false"
+            android:background="@drawable/button_bg"
             android:textColor="@color/white"
-            android:fontFamily="sans-serif"
-            android:textSize="16sp"
-            android:id="@+id/register"
-            android:background="@color/transparent" />
+            android:fontFamily="sans-serif-medium"
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="50dp"
-            android:text="Forgot password"
-            android:textAllCaps="true"
-            android:background="@color/transparent"
-            android:textColor="@color/white"
-            android:fontFamily="sans-serif"
+            android:layout_centerHorizontal="true"
             android:textSize="16sp"
-            android:id="@+id/forgetpassword"
-            android:layout_alignParentRight="true"
             />
 
+        <com.google.android.gms.common.SignInButton
+            android:layout_width="160dp"
+            android:layout_height="50dp"
+            android:id="@+id/googlelogin"
+            android:layout_below="@+id/login"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="15dp"
+
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="16dp"/>
+
+        </com.google.android.gms.common.SignInButton>
+
+
+
     </RelativeLayout>
+
+</RelativeLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_alignParentBottom="true"
+    android:id="@+id/rellay2"
+    android:visibility="gone">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="50dp"
+        android:text="Sign up"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:fontFamily="sans-serif"
+        android:textSize="16sp"
+        android:id="@+id/register"
+        android:background="@color/transparent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="50dp"
+        android:text="Forgot password"
+        android:textAllCaps="true"
+        android:background="@color/transparent"
+        android:textColor="@color/white"
+        android:fontFamily="sans-serif"
+        android:textSize="16sp"
+        android:id="@+id/forgetpassword"
+        android:layout_alignParentRight="true"
+        />
+
+</RelativeLayout>
 
 
 

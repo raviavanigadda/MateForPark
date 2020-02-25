@@ -8,4 +8,7 @@
         <item>Male</item>
         <item>Other</item>
     </string-array>
+
+    <string name="radio_male">Male</string>
+    <string name="radio_female">Female</string>
 </resources>

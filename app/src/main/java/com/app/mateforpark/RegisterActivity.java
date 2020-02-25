@@ -1,8 +1,5 @@
 package com.app.mateforpark;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,14 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
-
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-
-import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,15 +32,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText mUserName, mUserPassword, mUserEmail, mUserAge, mConfirmPassword;
-    private Button mSignup, mBack;
-    private String userGender;
+    private Button mSignup;
+    private String userGender, userCountryCode;
+    TextView mback;
     CountryCodePicker mCountryCodePicker;
 
     FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
+    private AuthStateListener firebaseAuthStateListener;
     Handler handler;
 
     //For progressbar after clicking signup
@@ -56,6 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
@@ -70,13 +70,16 @@ public class RegisterActivity extends AppCompatActivity {
         mCountryCodePicker = (CountryCodePicker) findViewById(R.id.ccp);
 
         mSignup = findViewById(R.id.signup);
-        mBack = findViewById(R.id.back);
+        mback = findViewById(R.id.back);
 
         final Spinner mySpinner = findViewById(R.id.spinner);
 
         //create data to show inside spinner
-        final ArrayAdapter<String> myAdapter = new ArrayAdapter<>(RegisterActivity.this,
+        /*final ArrayAdapter<String> myAdapter = new ArrayAdapter<>(RegisterActivity.this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.gender));
+*/
+        final ArrayAdapter<String> myAdapter = new ArrayAdapter<>(RegisterActivity.this,
+                R.layout.spinner_item, getResources().getStringArray(R.array.gender));
 
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -103,7 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         };
 
-        //mSignup.setVisibility(View.VISIBLE);
+       //mSignup.setVisibility(View.VISIBLE);
 
         mSignup.setOnClickListener(new OnClickListener() {
             @Override
@@ -118,6 +121,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 final String age = mUserAge.getText().toString();
                 final String country = mCountryCodePicker.getSelectedCountryEnglishName();
+                final String userCountryCode = mCountryCodePicker.getSelectedCountryNameCode();
 
                 if (TextUtils.isEmpty(name)) {
                     mUserName.setError("Please enter your name");
@@ -125,6 +129,10 @@ public class RegisterActivity extends AppCompatActivity {
                 else if(TextUtils.isEmpty(email))
                 {
                     mUserEmail.setError("Please enter your Email ID");
+                }
+                else if(!email.contains("@") || (!email.contains(".")))
+                {
+                    mUserEmail.setError("Please enter a valid Email ID");
                 }
                 else if (TextUtils.isEmpty(password)) {
                     mUserPassword.setError("Please enter your password");
@@ -146,7 +154,7 @@ public class RegisterActivity extends AppCompatActivity {
                     mUserAge.setError("Please enter your age");
                 }
 
-                else if(!TextUtils.isEmpty(age) && (Integer.parseInt(age) < 18 )||(Integer.parseInt(age) == 0)){
+               else if(!TextUtils.isEmpty(age) && (Integer.parseInt(age) < 18 )||(Integer.parseInt(age) == 0)){
                     mUserAge.setError("This app is only for 18 and above");
                 }
 
@@ -159,60 +167,61 @@ public class RegisterActivity extends AppCompatActivity {
                     checkEmail(email,mUserEmail);
 
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-                            if(task.isSuccessful()){
+                        if(task.isSuccessful()){
 
-                                String userId = mAuth.getCurrentUser().getUid();
-                                DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+                            String userId = mAuth.getCurrentUser().getUid();
+                            DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
 
-                                //To store the user information easily we use hashmaps
-                                Map userInfo = new HashMap<>();
+                            //To store the user information easily we use hashmaps
+                            Map userInfo = new HashMap<>();
 
-                                userInfo.put("name", name);
-                                userInfo.put("email", email);
-                                userInfo.put("gender", userGender);
-                                userInfo.put("age", age);
-                                userInfo.put("country", country);
-                                userInfo.put("photo","default");
+                            userInfo.put("name", name);
+                            userInfo.put("email", email);
+                            userInfo.put("gender", userGender);
+                            userInfo.put("age", age);
+                            userInfo.put("country", country);
+                            userInfo.put("countrycode", userCountryCode);
+                            userInfo.put("photo","default");
 
-                                currentUserDb.updateChildren(userInfo);
+                            currentUserDb.updateChildren(userInfo);
 
-                                Toast.makeText(RegisterActivity.this, "Registration Successful. Please wait...", Toast.LENGTH_SHORT).show();
-                                clearEditTextFields();
+                            Toast.makeText(RegisterActivity.this, "Registration Successful. Please wait...", Toast.LENGTH_SHORT).show();
+                            clearEditTextFields();
 
-                                String flag = "false";
-                                final Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+                            String flag = "false";
+                            final Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
 
-                                //Create a bundle
-                                Bundle b = new Bundle();
+                            //Create a bundle
+                            Bundle b = new Bundle();
 
-                                //add data to bundle
-                                b.putString("flag",flag);
-                                intent.putExtras(b);
+                            //add data to bundle
+                            b.putString("flag",flag);
+                            intent.putExtras(b);
 
-                                new MyTask().execute();
-                                mAuth.signOut();
-                                startActivity(intent);
-                                finish();
+                            new MyTask().execute();
+                            mAuth.signOut();
+                            startActivity(intent);
+                            finish();
 
-                           /* handler.postDelayed(new Runnable() {
-                               @Override
-                               public void run() {
-                                   // Do something after 3s = 3000ms
+                            /* handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // Do something after 3s = 3000ms
 
-                               }
-                           }, 4000);*/
+                                }
+                            }, 4000);*/
 
-                            }
                         }
+                    }
                     });
                 }
             }
         });
 
-        mBack.setOnClickListener(new OnClickListener() {
+        mback.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
@@ -222,6 +231,16 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void clearEditTextFields() {
+        mUserName.getText().clear();
+        mUserPassword.getText().clear();
+        mConfirmPassword.getText().clear();
+        mUserAge.getText().clear();
+        mUserEmail.getText().clear();
+    }
+
+
     public void checkEmail(String email, final EditText mUserEmail){
         mAuth.fetchSignInMethodsForEmail(this.mUserEmail.getText().toString())
                 .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
@@ -241,14 +260,6 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
     }
-    private void clearEditTextFields() {
-        mUserName.getText().clear();
-        mUserPassword.getText().clear();
-        mConfirmPassword.getText().clear();
-        mUserAge.getText().clear();
-        mUserEmail.getText().clear();
-    }
-
 
     private class MyTask extends AsyncTask<Void, Void, Void> {
 
@@ -275,7 +286,7 @@ public class RegisterActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                TimeUnit.SECONDS.sleep(3);
+                    TimeUnit.SECONDS.sleep(3);
 
             } catch (InterruptedException e) {
                 e.printStackTrace();

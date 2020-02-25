@@ -12,8 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.app.mateparktest.R;
-import com.app.mateparktest.UserProfile;
+import com.app.mateforpark.R;
+import com.app.mateforpark.UserProfile;
 import com.bumptech.glide.Glide;
 
 import java.util.List;

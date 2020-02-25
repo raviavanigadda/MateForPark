@@ -7,8 +7,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.app.mateparktest.Chat.ChatActivity;
-import com.app.mateparktest.R;
+
+import com.app.mateforpark.Chat.ChatActivity;
+import com.app.mateforpark.R;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
