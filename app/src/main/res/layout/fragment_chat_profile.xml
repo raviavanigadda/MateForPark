@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.Matches.MatchesFragment">
+    tools:context=".UserFragments.Matches.MatchesFragment"
+    android:background="@color/white">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
+
+
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
@@ -20,4 +29,19 @@
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.core.widget.NestedScrollView>
 
-</LinearLayout>
+        <TextView
+
+            android:id="@+id/errorChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:layout_centerInParent="true"
+            android:padding="10dp"
+            android:text="Oh no! It's empty :( \n\nStart swiping now! ;)"
+            android:textSize="25sp"
+            android:gravity="center"
+
+            />
+    </RelativeLayout>
+
+</RelativeLayout>

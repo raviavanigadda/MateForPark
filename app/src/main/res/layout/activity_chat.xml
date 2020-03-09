@@ -4,13 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Chat.ChatActivity"
+    tools:context=".UserFragments.Chat.ChatActivity"
     android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:id="@+id/customtoolbar"
+        android:elevation="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MATE FOR PARK"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"/>
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/logocouple"/>
+
+        </LinearLayout>
+
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/sendLayout">
+        android:layout_above="@+id/sendLayout"
+        android:layout_below="@+id/customtoolbar"
+       >
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
@@ -26,20 +57,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="5dp"
+        android:layout_margin="10dp">
 
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"
+            android:layout_weight="0.7"
             android:hint="Type here..."
-            android:id="@+id/editTextMessage"/>
+            android:id="@+id/editTextMessage"
+            android:layout_marginRight="5dp"/>
 
         <Button
-            android:layout_weight="0.2"
+            android:layout_weight="0.3"
             android:layout_width="0dp"
+            android:layout_marginLeft="5dp"
             android:layout_height="wrap_content"
             android:text="Send"
+            android:padding="10dp"
+            android:background="@drawable/button_bg"
             android:id="@+id/send"/>
     </LinearLayout>
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserProfileSettingsActivity"
+    tools:context=".UserMainActivities.User_Settings_Activity"
     android:orientation="vertical"
     android:background="@drawable/grad_bg">
 
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="50dp"
+
             >
             <LinearLayout
                 android:layout_width="match_parent"
@@ -116,6 +116,61 @@
                 <TextView
                     android:layout_width="40sp"
                     android:layout_height="wrap_content"
+                    android:text="Bio"
+                    android:layout_weight="0.2"
+                    android:textColor="@color/white"/>
+
+                <EditText
+                    android:layout_width="60sp"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter your Bio (Max 80 characters)"
+                    android:focusable="auto"
+                    android:layout_weight="0.8"
+                    android:maxLength="80"
+                    android:id="@+id/userBio"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@color/white"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10sp">
+
+                <TextView
+                    android:layout_width="40sp"
+                    android:layout_height="wrap_content"
+                    android:text="Status"
+                    android:layout_weight="0.2"
+                    android:textColor="@color/white"
+                    />
+
+                <EditText
+                    android:layout_width="60sp"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter current Status (Max 100 characters)"
+                    android:focusable="auto"
+                    android:layout_weight="0.8"
+                    android:id="@+id/userStatus"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@color/white"
+                    android:maxLength="100"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10sp">
+
+                <TextView
+                    android:layout_width="40sp"
+                    android:layout_height="wrap_content"
                     android:text="Age"
                     android:layout_weight="0.2"
                     android:textColor="@color/white"/>
@@ -149,23 +204,12 @@
                     android:layout_gravity="center"
                     android:textColor="@color/white"/>
 
-                <TextView
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="60sp"
-                    android:layout_height="wrap_content"
-                    android:hint="Country"
-                    android:focusable="auto"
-                    android:layout_weight="0.8"
-                    android:textSize="18sp"
-                    android:id="@+id/et_country"
-                    android:layout_marginLeft="20dp"
-                    android:maxLength="20"
-                    android:textColor="@color/white"
-                    />
+
 
                 <com.hbb20.CountryCodePicker
                     android:layout_marginLeft="20dp"
                     app:ccp_textGravity="RIGHT"
+                    app:ccpDialog_background="@drawable/button_bg"
                     android:id="@+id/countrypicker"
                     android:layout_width="60sp"
                     app:ccp_showFullName="true"
@@ -176,7 +220,9 @@
                     android:maxLength="2"
                     android:layout_weight="0.8"
                     app:ccp_countryPreference="US,CA,AU,IN"
-                    app:ccp_contentColor="@color/white"/>
+                    app:ccp_contentColor="@color/white"
+                    android:gravity="right"
+                    />
 
             </LinearLayout>
 
@@ -232,7 +278,16 @@
                     android:id="@+id/savechanges"
                     android:layout_gravity="center"
 
-                    android:background="@drawable/button_bg"
+                    android:background="@drawable/button_white_bg"
+                    android:textColor="@color/white"/>
+
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:text="Edit Profile"
+                    android:id="@+id/editprofile"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_white_bg"
                     android:textColor="@color/white"/>
 
 

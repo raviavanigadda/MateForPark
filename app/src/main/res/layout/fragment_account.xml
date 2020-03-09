@@ -3,20 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.AccountFragment"
+    tools:context=".UserFragments.View_Account_Settings_Fragment"
     >
 
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       android:orientation="vertical"
-
-       >
+       android:orientation="vertical">
 
        <LinearLayout
 
            android:layout_width="match_parent"
-           android:layout_height="130dp"
+           android:layout_height="150dp"
            android:orientation="vertical"
            android:background="@color/colorPrimaryDark"
            android:padding="20dp"
@@ -71,6 +69,32 @@
            android:layout_height="wrap_content"
            android:orientation="horizontal"
            android:padding="20dp"
+           android:id="@+id/contactus">
+
+           <ImageView
+               android:layout_width="30dp"
+               android:layout_height="30dp"
+               android:layout_gravity="center_vertical"
+               android:background="@drawable/ic_live_help_black_24dp"/>
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_weight="0.5"
+               android:layout_gravity="center_vertical"
+               android:text="Contact us"
+               android:textSize="20sp"
+               android:layout_marginLeft="20dp"/>
+
+
+
+       </LinearLayout>
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:padding="20dp"
            android:id="@+id/signout">
 
            <ImageView
@@ -87,11 +111,7 @@
                android:text="Sign out"
                android:textSize="20sp"
                android:layout_marginLeft="20dp"/>
-
-
-
        </LinearLayout>
-
 
    </LinearLayout>
 

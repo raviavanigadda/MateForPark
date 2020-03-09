@@ -6,6 +6,7 @@
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00000000</color>
 
+    <color name="selectedRadio">#f7ba8b</color>
     <color name="gradStart">#fa6f5a</color>
     <color name="gradStop">#fa5555</color>
 

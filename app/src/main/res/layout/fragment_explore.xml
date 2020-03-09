@@ -1,146 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragments.ExploreFragment"
-    android:orientation="vertical">
-
-    <!-- TODO: Update blank fragment layout -->
+    android:orientation="vertical"
+    android:background="@color/white">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:text="Gender"
+            android:textSize="25sp"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/genderTV"/>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioGroupFilter"
             android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:visibility="visible"
+            android:checkedButton="@id/maleRadio"
+            android:layout_below="@id/genderTV"
+            android:padding="20dp"
+            >
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="FILTER USER PROFILES"
-                android:textStyle="bold"
-                android:textSize="30sp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <LinearLayout
+            <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:orientation="horizontal">
+                android:text="@string/radio_male"
+                android:layout_weight="0.3"
+                android:id="@+id/maleRadio"
+                android:textSize="20sp"
+                android:buttonTint="@color/colorPrimary"
+                />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Select Gender"
-                    android:textSize="15sp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp">
-
-                <RadioGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/radioGroupFilter"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/radio_male"
-                        android:layout_weight="0.5"
-                        android:buttonTint="@color/colorPrimary"/>
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/radio_female"
-                        android:buttonTint="@color/colorPrimary"
-                        android:layout_weight="0.5" />
-
-                </RadioGroup>
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <LinearLayout
+            <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:orientation="horizontal">
+                android:text="@string/radio_female"
+                android:id="@+id/femaleRadio"
+                android:layout_weight="0.3"
+                android:textSize="20sp"
+                android:buttonTint="@color/colorPrimary"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Select Country"
-                    android:textSize="15sp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <RadioButton
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp">
+                android:text="Others"
+                android:id="@+id/othersRadio"
+                android:layout_weight="0.3"
+                android:textSize="20sp"
+                android:buttonTint="@color/colorPrimary"/>
 
-                <com.hbb20.CountryCodePicker
-                    android:id="@+id/countryFilter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:focusable="auto"
-                    android:maxLength="2"
-                    app:ccp_defaultNameCode="CA"
-                    app:ccp_showFullName="true"
-                    app:ccp_showNameCode="true"
-                    app:ccp_showPhoneCode="false"
-                    app:ccp_textGravity="LEFT"
-                    app:ccp_textSize="15sp"
-                    app:ccp_countryPreference="US,CA,AU,IN"/>
-
-            </LinearLayout>
+        </RadioGroup>
 
 
-        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Country"
+            android:textSize="25sp"
+            android:textColor="@color/colorPrimary"
+            android:layout_below="@id/radioGroupFilter"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/selectCountryTV"/>
 
-        <Button
-            android:id="@+id/filter"
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/countryFilter"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:fontFamily="sans-serif-medium"
-            android:text="Filter"
-            android:textAllCaps="false"
-            android:textSize="17sp" />
+            android:layout_height="wrap_content"
+            android:focusable="auto"
+            android:maxLength="2"
+            app:ccp_defaultNameCode="CA"
+            app:ccp_showFullName="true"
+            app:ccp_showNameCode="true"
+            app:ccp_showPhoneCode="false"
+            app:ccp_textGravity="LEFT"
+            app:ccp_textSize="20sp"
+            app:ccp_countryPreference="US,CA,AU,IN"
+            android:layout_below="@id/selectCountryTV"
+            android:padding="20dp"
+            />
 
-    </LinearLayout>
+        <TextView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Age"
+            android:textSize="25sp"
+            android:textColor="@color/colorPrimary"
+            android:layout_below="@id/countryFilter"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/selectAge"/>
 
-</LinearLayout>
+        <TextView
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:layout_toRightOf="@id/selectAge"
+            android:layout_below="@id/countryFilter"
+            android:layout_above="@id/rangeView"
+            android:layout_alignParentStart="true"
+            android:id="@+id/ageDisplay"/>
+
+        <me.bendik.simplerangeview.SimpleRangeView
+            android:visibility="gone"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/selectAge"
+            app:count="99"
+            app:movable="true"
+            app:start="18"
+            app:startFixed="18"
+            app:endFixed="90"
+            app:end="28"
+            android:id="@+id/rangeView"
+            app:lineColor="#000"
+            app:showLabels="false"
+            app:activeThumbColor="@color/colorPrimary"
+            app:activeLineColor="@color/colorPrimary"
+            app:activeLabelColor="@color/colorPrimary"
+            app:activeFocusThumbColor="@color/colorPrimary"
+            app:activeThumbLabelColor="#fff"
+            app:activeTickColor="@color/colorPrimary"
+            app:tickColor="#000"
+
+            />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="323dp"
+            android:layout_below="@id/rangeView"
+            >
+
+            <Button
+
+                android:id="@+id/filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:background="@drawable/button_bg"
+                android:fontFamily="sans-serif-medium"
+                android:padding="15dp"
+                android:text="Filter Profiles"
+                android:textSize="20sp"
+
+                />
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

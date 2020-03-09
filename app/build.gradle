@@ -28,6 +28,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.google.firebase:firebase-database:19.2.0'
     implementation 'com.google.firebase:firebase-storage:19.1.0'
+
+    implementation 'com.android.volley:volley:1.1.0'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+
+
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
@@ -36,6 +41,8 @@ dependencies {
     implementation 'com.hbb20:ccp:2.3.7'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.preference:preference:1.1.0-rc01'
+    implementation 'me.bendik.simplerangeview:simplerangeview:0.2.0'
+    
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'

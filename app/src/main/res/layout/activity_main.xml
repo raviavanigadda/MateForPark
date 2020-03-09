@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context=".MainActivity"
+tools:context=".UserMainActivities.Main_Activity"
 android:orientation="vertical">
 
     <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        layout="@layout/custom_toolbar" />
+        layout="@layout/custom_toolbar"
+        android:id="@+id/toolbar"/>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/container">
-    </FrameLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:layout_below="@+id/toolbar">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/container"
+                android:layout_above="@+id/navigationView">
+            </FrameLayout>
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/navigationView"
@@ -35,4 +40,4 @@ android:orientation="vertical">
                 />
         </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

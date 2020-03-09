@@ -1,38 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
-
-    <include
-        android:id="@+id/include"
-        layout="@layout/custom_toolbar"
+    tools:context=".UserMainActivities.Main_Activity"
+    android:id="@+id/fragment_home"
+    >
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="610dp"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:id="@+id/rl1">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/container"
-        android:layout_above="@+id/navigationView">
-    </FrameLayout>
+            <TextView
+                android:id="@+id/errorHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="20dp"
+                android:text="No profiles available at the moment. Please try again later."
+                android:textSize="25sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:itemBackground="?selectableItemBackgroundBorderless"
-        app:itemHorizontalTranslationEnabled="true"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_nav"
-        />
+            <com.lorentzos.flingswipe.SwipeFlingAdapterView
+                android:id="@+id/frame"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="#ffeee9e2"
+                android:backgroundTint="@color/white"
+                app:max_visible="3"
+                app:min_adapter_stack="6"
+                app:rotation_degrees="8" />
+    </LinearLayout>
+
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl1"
+                android:layout_alignParentBottom="true"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="10dp"
+                    >
+
+                    <Button
+                        android:id="@+id/leftSwipe"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/grad_bg"
+                        android:text="X"
+                        android:textColor="@color/white"
+                        android:textSize="30dp" />
+
+                    <Button
+                        android:id="@+id/rightSwipe"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/grad_bg"
+                        android:text="✓"
+                        android:textColor="@color/white"
+                        android:textSize="30dp" />
+                </LinearLayout>
+            </FrameLayout>
 
 
 
 
-</LinearLayout>
+
+
+</RelativeLayout>

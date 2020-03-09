@@ -14,23 +14,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/viewmatchprofile">
+        android:id="@+id/viewmatchprofile"
+        >
 
         <androidx.cardview.widget.CardView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
             app:cardCornerRadius="250dp"
             app:cardBackgroundColor="@color/white">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_gravity="center"
                 app:cardCornerRadius="250dp">
 
                 <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:src="@drawable/default_image"
                     android:id="@+id/matchProfileImage"
                     android:scaleType="centerCrop"
@@ -46,23 +47,44 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingLeft="20sp">
+            android:padding="10dp">
 
             <TextView
-                android:paddingBottom="20sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Matcher's Name"
                 android:layout_gravity="center"
                 android:id="@+id/matchName"
+                android:textSize="20sp"
                 />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Matcher's ID"
+                android:text="Matcher's Id"
                 android:layout_gravity="center"
                 android:id="@+id/matchId"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Status:"
+                android:textStyle="italic"
+                android:layout_gravity="center"
+                android:id="@+id/matchStatus"
+                android:textSize="17sp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Matcher's Country"
+                android:layout_gravity="center"
+                android:id="@+id/matchCountry"
+                android:textSize="15sp"
+                android:textStyle="bold"
                 />
 
 
