@@ -1,4 +1,4 @@
-package com.app.mateforpark.Chat;
+package com.app.mateforpark.UserFragments.Chat;
 
 import android.os.Bundle;
 import android.view.View;

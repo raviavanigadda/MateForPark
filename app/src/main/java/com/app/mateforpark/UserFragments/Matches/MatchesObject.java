@@ -1,6 +1,6 @@
-package com.app.mateforpark.Fragments.ChatScreenFragment;
+package com.app.mateforpark.UserFragments.Matches;
 
-public class ChatScreenObject {
+public class MatchesObject {
 
     private String userId;
     private String userName;
@@ -23,7 +23,7 @@ public class ChatScreenObject {
         this.profileImageUrl = profileImageUrl;
     }
 
-    public ChatScreenObject(String userId, String userName, String profileImageUrl) {
+    public MatchesObject(String userId, String userName, String profileImageUrl) {
         this.userId = userId;
         this.userName = userName;
         this.profileImageUrl = profileImageUrl;

@@ -1,4 +1,4 @@
-package com.app.mateforpark.Fragments.ChatScreenFragment;
+package com.app.mateforpark.UserFragments.ChatList;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,20 +7,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-import com.app.mateforpark.Chat.ChatActivity;
-import com.app.mateforpark.R;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ChatScreenViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
+import com.app.mateforpark.UserFragments.Chat.ChatActivity;
+import com.app.mateforpark.R;
 
-    public TextView mChatId, mChatName;
+public class ChatListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+    public TextView mChatId, mChatName, mChatCountry, mChatBio;
     public ImageView mChatImage;
     Context context;
 
-    public ChatScreenViewHolders(@NonNull View itemView) {
+    public ChatListViewHolder(@NonNull View itemView) {
 
         super(itemView);
 
@@ -29,14 +28,18 @@ public class ChatScreenViewHolders extends RecyclerView.ViewHolder implements Vi
         mChatId = itemView.findViewById(R.id.chatId);
         mChatName = itemView.findViewById(R.id.chatName);
         mChatImage = itemView.findViewById(R.id.chatProfileImage);
+        mChatBio = itemView.findViewById(R.id.bioChat);
+        mChatCountry = itemView.findViewById(R.id.userCountry);
     }
 
     @Override
     public void onClick(View view) {
+
         Intent intent = new Intent(view.getContext(), ChatActivity.class);
         Bundle b = new Bundle();
 
         b.putString("matchId",mChatId.getText().toString());
+
 
         intent.putExtras(b);
 

@@ -1,4 +1,4 @@
-package com.app.mateforpark.Fragments;
+package com.app.mateforpark.UserFragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.app.mateforpark.Fragments.Cards.Cards;
-import com.app.mateforpark.Fragments.Cards.CustomArrayAdapter;
+import com.app.mateforpark.UserFragments.Cards.Cards;
+import com.app.mateforpark.UserFragments.Cards.CustomArrayAdapter;
 import com.app.mateforpark.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,7 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
-public class HomeFragment extends Fragment{
+public class Home_Dashboard_Fragment extends Fragment{
 
     private CustomArrayAdapter arrayAdapter;
     private FirebaseAuth mAuth;
@@ -53,7 +53,7 @@ public class HomeFragment extends Fragment{
 
     }
 
-    public HomeFragment() {
+    public Home_Dashboard_Fragment() {
         // Required empty public constructor
     }
 
@@ -107,7 +107,7 @@ public class HomeFragment extends Fragment{
             public void onLeftCardExit(Object dataObject) {
 
                 //Do something on the left!
-                refreshFragmentUI(HomeFragment.this);
+                refreshFragmentUI(Home_Dashboard_Fragment.this);
                 Cards obj = (Cards) dataObject;
 
                 //Cards parameters should appear
@@ -119,7 +119,7 @@ public class HomeFragment extends Fragment{
             @Override
             public void onRightCardExit(Object dataObject) {
 
-                refreshFragmentUI(HomeFragment.this);
+                refreshFragmentUI(Home_Dashboard_Fragment.this);
                 Cards obj = (Cards) dataObject;
                 String userId = obj.getUserID();
                 usersDb.child(userId).child("connections").child("accept").child(currentUId).setValue(true);

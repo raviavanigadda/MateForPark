@@ -1,4 +1,4 @@
-package com.app.mateforpark;
+package com.app.mateforpark.UserMainActivities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.mateforpark.R;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,7 +43,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class UserProfileSettingsActivity extends AppCompatActivity {
+public class User_Settings_Activity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mUserDatabase;
@@ -68,7 +69,7 @@ public class UserProfileSettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile_settings);
 
         mUserName = findViewById(R.id.username);
-        mUserCountry = findViewById(R.id.et_country);
+        mUserCountry = findViewById(R.id.userCountry);
         mUserEmail = findViewById(R.id.useremail);
         mUserAge = findViewById(R.id.userage);
         mUserGender = findViewById(R.id.gender);
@@ -81,7 +82,7 @@ public class UserProfileSettingsActivity extends AppCompatActivity {
         mySpinner = findViewById(R.id.spinner);
 
         //create data to show inside spinner
-        final ArrayAdapter<String> myAdapter = new ArrayAdapter<>(UserProfileSettingsActivity.this,
+        final ArrayAdapter<String> myAdapter = new ArrayAdapter<>(User_Settings_Activity.this,
                 R.layout.spinner_item, getResources().getStringArray(R.array.gender));
 
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -293,7 +294,7 @@ public class UserProfileSettingsActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View view) {
                                     mCountryCodePicker.setVisibility(View.VISIBLE);
-                                    Toast.makeText(UserProfileSettingsActivity.this, usersCountryCode, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(User_Settings_Activity.this, usersCountryCode, Toast.LENGTH_SHORT).show();
                                     mCountryCodePicker.setDefaultCountryUsingNameCode(usersCountryCode);
                                     mCountryCodePicker.resetToDefaultCountry();
                                     mUserCountry.setVisibility(View.GONE);

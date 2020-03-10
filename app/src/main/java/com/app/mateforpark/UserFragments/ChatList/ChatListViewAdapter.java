@@ -1,9 +1,13 @@
-package com.app.mateforpark.Fragments.ChatScreenFragment;
+package com.app.mateforpark.UserFragments.ChatList;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.LayoutParams;
 
 import com.app.mateforpark.R;
 import com.bumptech.glide.Glide;
@@ -13,14 +17,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.LayoutParams;
-
 //this function takes care of populating data in xml layout
-public class ChatScreenAdapter extends RecyclerView.Adapter<ChatScreenViewHolders> {
+public class ChatListViewAdapter extends RecyclerView.Adapter<ChatListViewHolder> {
 
-    private List<ChatScreenObject> chatList;
+    private List<ChatListObject> chatList;
     private Context context;
 
     private FirebaseAuth mAuth;
@@ -30,7 +30,7 @@ public class ChatScreenAdapter extends RecyclerView.Adapter<ChatScreenViewHolder
 
 
     //passes information between matchesactivity and matchesadapter and matcheslist we want
-    public ChatScreenAdapter(List<ChatScreenObject> chatList, Context context){
+    public ChatListViewAdapter(List<ChatListObject> chatList, Context context){
 
         this.chatList = chatList;
         this.context = context;
@@ -39,7 +39,7 @@ public class ChatScreenAdapter extends RecyclerView.Adapter<ChatScreenViewHolder
 
     @NonNull
     @Override
-    public ChatScreenViewHolders onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ChatListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         //always some for recycler view
         //part that controls the layout
@@ -49,18 +49,20 @@ public class ChatScreenAdapter extends RecyclerView.Adapter<ChatScreenViewHolder
 
         layoutView.setLayoutParams(lp);
 
-        ChatScreenViewHolders rcv = new ChatScreenViewHolders((layoutView));
+        ChatListViewHolder rcv = new ChatListViewHolder((layoutView));
 
         return rcv;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChatScreenViewHolders holder, final int position) {
+    public void onBindViewHolder(@NonNull ChatListViewHolder holder, final int position) {
 
         //this takes care of populating the layout we pass above
         //position is to check if item is in the recyler view. views outside the screen are destroyed.
         holder.mChatId.setText(chatList.get(position).getUserId());
         holder.mChatName.setText(chatList.get(position).getUserName());
+        holder.mChatCountry.setText(chatList.get(position).getUserCountry());
+        holder.mChatBio.setText(chatList.get(position).getUserBio());
 
         if(!chatList.get(position).getProfileImageUrl().equals("default")){
             Glide.with(context).load(chatList.get(position).getProfileImageUrl()).into(holder.mChatImage);

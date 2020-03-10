@@ -1,10 +1,17 @@
-package com.app.mateforpark.Fragments.ChatScreenFragment;
+package com.app.mateforpark.UserFragments.ChatList;
 
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.mateforpark.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,24 +24,19 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChatScreenFragment extends Fragment {
+public class ChatListFragment extends Fragment {
 
     private RecyclerView mChatRecyclerView;
     private RecyclerView.Adapter mChatAdapter;
     private RecyclerView.LayoutManager mChatLayoutManager;
     private String currentUserId;
+    TextView mErrorDisplay;
 
-    public ChatScreenFragment() {
+    public ChatListFragment() {
         //Required empty public constructor
     }
 
@@ -53,6 +55,7 @@ public class ChatScreenFragment extends Fragment {
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         mChatRecyclerView = getView().findViewById(R.id.recyclerViewChat);
+        mErrorDisplay = getView().findViewById(R.id.errorChat);
 
         //allows to scroll freely through recycler view with no hickups
         mChatRecyclerView.setNestedScrollingEnabled(false);
@@ -61,8 +64,9 @@ public class ChatScreenFragment extends Fragment {
         mChatLayoutManager = new LinearLayoutManager(getActivity());
         mChatRecyclerView.setLayoutManager(mChatLayoutManager);
 
-        mChatAdapter = new ChatScreenAdapter(getDataSetMatches(), getActivity());
+        mChatAdapter = new ChatListViewAdapter(getDataSetMatches(), getActivity());
         mChatRecyclerView.setAdapter(mChatAdapter);
+
 
         getUserMatchId();
 
@@ -75,11 +79,14 @@ public class ChatScreenFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot match : dataSnapshot.getChildren()){
+                if(dataSnapshot.exists()) {
+                    for (DataSnapshot match : dataSnapshot.getChildren()) {
                         FetchMatchInformation(match.getKey());
                     }
-
+                    mErrorDisplay.setVisibility(View.GONE);
+                }
+                else{
+                        mErrorDisplay.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -100,9 +107,19 @@ public class ChatScreenFragment extends Fragment {
                     String userId = dataSnapshot.getKey();
                     String name = "";
                     String profileImageUrl = "";
+                    String country = "";
+                    String bio = "";
 
                     if(dataSnapshot.child("name").getValue()!=null){
                         name = dataSnapshot.child("name").getValue().toString();
+                    }
+
+                    if(dataSnapshot.child("country").getValue()!=null){
+                        country = dataSnapshot.child("country").getValue().toString();
+                    }
+
+                    if(dataSnapshot.child("bio").getValue()!=null){
+                        bio = dataSnapshot.child("bio").getValue().toString();
                     }
 
                     if(!dataSnapshot.child("photo").getValue().equals("default")){
@@ -110,7 +127,7 @@ public class ChatScreenFragment extends Fragment {
                         profileImageUrl = dataSnapshot.child("photo").getValue().toString();
                     }
 
-                    ChatScreenObject obj = new ChatScreenObject(userId, name, profileImageUrl);
+                    ChatListObject obj = new ChatListObject(userId, name, profileImageUrl, country, bio);
                     resultsChat.add(obj);
 
                     mChatAdapter.notifyDataSetChanged();
@@ -125,9 +142,9 @@ public class ChatScreenFragment extends Fragment {
         });
     }
 
-    private ArrayList<ChatScreenObject> resultsChat= new ArrayList<ChatScreenObject>();
+    private ArrayList<ChatListObject> resultsChat= new ArrayList<ChatListObject>();
 
-    private List<ChatScreenObject> getDataSetMatches() {
+    private List<ChatListObject> getDataSetMatches() {
         return resultsChat;
     }
 

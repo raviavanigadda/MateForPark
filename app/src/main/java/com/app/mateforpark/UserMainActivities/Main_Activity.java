@@ -1,14 +1,15 @@
-package com.app.mateforpark;
+package com.app.mateforpark.UserMainActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.app.mateforpark.Fragments.AccountFragment;
-import com.app.mateforpark.Fragments.ChatScreenFragment.ChatScreenFragment;
-import com.app.mateforpark.Fragments.ExploreFragment;
-import com.app.mateforpark.Fragments.HomeFragment;
-import com.app.mateforpark.Fragments.Matches.MatchesFragment;
+import com.app.mateforpark.R;
+import com.app.mateforpark.UserFragments.ChatList.ChatListFragment;
+import com.app.mateforpark.UserFragments.Explore_Fragment;
+import com.app.mateforpark.UserFragments.Home_Dashboard_Fragment;
+import com.app.mateforpark.UserFragments.Matches.MatchesFragment;
+import com.app.mateforpark.UserFragments.View_Account_Settings_Fragment;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
@@ -23,10 +24,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity {
+public class Main_Activity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private AuthStateListener firebaseAuthStateListener;
+    private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
     private DatabaseReference usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
     private GoogleSignInClient mGoogleSignInClient;
 
@@ -58,39 +59,37 @@ public class MainActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if(user != null){
-                    Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                    Intent intent = new Intent(Main_Activity.this, Login_Activity.class);
                     startActivity(intent);
                     finish();
                 }
             }
         };
 
-
-
     }
 
-    private OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-        = new OnNavigationItemSelectedListener() {
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-           switch(menuItem.getItemId()){
-               case R.id.home:
-                   loadFragment(new HomeFragment());
-                   return true;
-               case R.id.chat:
-                   loadFragment(new ChatScreenFragment());
-                   return true;
-               case R.id.explore:
-                   loadFragment(new ExploreFragment());
-                   return true;
-               case R.id.Account:
-                   loadFragment(new AccountFragment());
-                   return true;
-               case R.id.matches:
-                   loadFragment(new MatchesFragment());
-                   return true;
-           }
+            switch(menuItem.getItemId()){
+                case R.id.home:
+                    loadFragment(new Home_Dashboard_Fragment());
+                    return true;
+                case R.id.chat:
+                    loadFragment(new ChatListFragment());
+                    return true;
+                case R.id.explore:
+                    loadFragment(new Explore_Fragment());
+                    return true;
+                case R.id.Account:
+                    loadFragment(new View_Account_Settings_Fragment());
+                    return true;
+                case R.id.matches:
+                    loadFragment(new MatchesFragment());
+                    return true;
+            }
 
             return false;
         }
@@ -99,11 +98,13 @@ public class MainActivity extends AppCompatActivity {
 
     //To load fragments when pressed in bottom navigation bar
     private void loadFragment(Fragment fragment) {
+
         // load fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+
     }
 
 

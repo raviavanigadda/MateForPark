@@ -1,4 +1,4 @@
-package com.app.mateforpark.Chat;
+package com.app.mateforpark.UserFragments.Chat;
 
 public class ChatObject {
 

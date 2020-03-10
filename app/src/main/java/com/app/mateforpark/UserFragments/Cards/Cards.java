@@ -1,4 +1,4 @@
-package com.app.mateforpark.Fragments.Cards;
+package com.app.mateforpark.UserFragments.Cards;
 
 public class Cards {
 

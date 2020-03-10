@@ -1,4 +1,4 @@
-package com.app.mateforpark.Fragments.Matches;
+package com.app.mateforpark.UserFragments.Matches;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 
 import com.app.mateforpark.R;
-import com.app.mateforpark.UserProfile;
+import com.app.mateforpark.UserMainActivities.User_Profile_Activity;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +33,7 @@ public class MatchesViewHolders extends RecyclerView.ViewHolder implements View.
 
     @Override
     public void onClick(View view) {
-        final Intent intent = new Intent(view.getContext(), UserProfile.class);
+        final Intent intent = new Intent(view.getContext(), User_Profile_Activity.class);
         //Create a bundle
         Bundle b = new Bundle();
         //add data to bundle

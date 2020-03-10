@@ -1,4 +1,4 @@
-package com.app.mateforpark;
+package com.app.mateforpark.UserMainActivities;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.mateforpark.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -35,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class RegisterActivity extends AppCompatActivity {
+public class Register_Activity extends AppCompatActivity {
 
     private EditText mUserName, mUserPassword, mUserEmail, mUserAge, mConfirmPassword;
     private Button mSignup;
@@ -50,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
     //For progressbar after clicking signup
     AlphaAnimation inAnimation;
     AlphaAnimation outAnimation;
-    FrameLayout progressBarHolder;
+   // FrameLayout progressBarHolder;
 
 
     @Override
@@ -78,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
         /*final ArrayAdapter<String> myAdapter = new ArrayAdapter<>(RegisterActivity.this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.gender));
 */
-        final ArrayAdapter<String> myAdapter = new ArrayAdapter<>(RegisterActivity.this,
+        final ArrayAdapter<String> myAdapter = new ArrayAdapter<>(Register_Activity.this,
                 R.layout.spinner_item, getResources().getStringArray(R.array.gender));
 
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -89,7 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         handler = new Handler();
-        progressBarHolder = (FrameLayout)findViewById(R.id.progressBarHolder);
+//        progressBarHolder = (FrameLayout)findViewById(R.id.progressBarHolder);
 
         firebaseAuthStateListener = new AuthStateListener() {
             @Override
@@ -97,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                 if(user != null){
-                    Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+                    Intent intent = new Intent(Register_Activity.this, Login_Activity.class);
                     startActivity(intent);
                     finish();
                     return;
@@ -160,13 +161,13 @@ public class RegisterActivity extends AppCompatActivity {
 
                 else if(userGender.equals("Do not specify"))
                 {
-                    Toast.makeText(RegisterActivity.this, "Please select your gender", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register_Activity.this, "Please select your gender", Toast.LENGTH_SHORT).show();
                 }
 
                 else {
                     checkEmail(email,mUserEmail);
 
-                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Register_Activity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
@@ -188,11 +189,11 @@ public class RegisterActivity extends AppCompatActivity {
 
                             currentUserDb.updateChildren(userInfo);
 
-                            Toast.makeText(RegisterActivity.this, "Registration Successful. Please wait...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Register_Activity.this, "Registration Successful. Please wait...", Toast.LENGTH_SHORT).show();
                             clearEditTextFields();
 
                             String flag = "false";
-                            final Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+                            final Intent intent = new Intent(Register_Activity.this, Login_Activity.class);
 
                             //Create a bundle
                             Bundle b = new Bundle();
@@ -224,7 +225,7 @@ public class RegisterActivity extends AppCompatActivity {
         mback.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+                Intent intent = new Intent(Register_Activity.this, Login_Activity.class);
                 startActivity(intent);
                 finish();
                 return;
@@ -269,8 +270,7 @@ public class RegisterActivity extends AppCompatActivity {
             mSignup.setEnabled(false);
             inAnimation = new AlphaAnimation(0f, 1f);
             inAnimation.setDuration(200);
-            progressBarHolder.setAnimation(inAnimation);
-            progressBarHolder.setVisibility(View.VISIBLE);
+
         }
 
         @Override
@@ -278,8 +278,7 @@ public class RegisterActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             outAnimation = new AlphaAnimation(1f, 0f);
             outAnimation.setDuration(300);
-            progressBarHolder.setAnimation(outAnimation);
-            progressBarHolder.setVisibility(View.GONE);
+           
             mSignup.setEnabled(true);
         }
 

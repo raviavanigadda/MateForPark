@@ -1,4 +1,4 @@
-package com.app.mateforpark.Fragments.Matches;
+package com.app.mateforpark.UserFragments.Matches;
 
 import android.content.Context;
 import android.view.LayoutInflater;

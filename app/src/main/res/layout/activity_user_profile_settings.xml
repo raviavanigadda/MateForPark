@@ -200,6 +200,7 @@
                     android:layout_width="40sp"
                     android:layout_height="wrap_content"
                     android:text="Country"
+
                     android:layout_weight="0.2"
                     android:layout_gravity="center"
                     android:textColor="@color/white"/>

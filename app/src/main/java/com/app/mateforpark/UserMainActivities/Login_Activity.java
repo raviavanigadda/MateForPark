@@ -1,4 +1,4 @@
-package com.app.mateforpark;
+package com.app.mateforpark.UserMainActivities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.mateforpark.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -43,28 +44,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LoginActivity extends AppCompatActivity {
-
+public class Login_Activity extends AppCompatActivity {
     private int RC_SIGN_IN = 1;
 
     //To use google signin button
     private SignInButton mGoogleLogin;
 
     final String gender = "Do not specify";
-    final String country = "default";
+    final String country = "";
+    final String status = "";
+    final String bio = "";
+    final String countrycode = "";
 
     private Button mLogin;
     private EditText mEmail,mPassword;
     TextView mRegister, mForgetPassword, mTitle, mSubtitle;
 
+    private DatabaseReference usersDb;
     //A client for interacting with the Google Sign In API.
     private GoogleSignInClient mGoogleSignInClient;
 
     //Firebase Variables
     private FirebaseAuth mAuth;
+    private String currentUserID;
 
     //AuthStateListener is called when there is a change in the authentication state
-    private AuthStateListener firebaseAuthStateListener;
+    private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
     //Database for Images
     private FirebaseStorage storage;
@@ -72,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
 
     RelativeLayout rellay1, rellay2;
     Handler handler = new Handler();
+
     Runnable runnable= new Runnable() {
         @Override
         public void run() {
@@ -122,6 +128,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+                /*
                 //Checks for flag from registration
                 final Bundle bundle = getIntent().getExtras();
                 String flag;
@@ -136,14 +143,23 @@ public class LoginActivity extends AppCompatActivity {
                 if(user != null && flag == "true"){
                    userDashboard();
                 }
+
+                */
+
+                if(user != null) {
+                    Intent intent = new Intent(Login_Activity.this, Main_Activity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         };
 
         mRegister.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+                Intent intent = new Intent(Login_Activity.this, Register_Activity.class);
                 startActivity(intent);
+
                 finish();
             }
         });
@@ -151,9 +167,8 @@ public class LoginActivity extends AppCompatActivity {
         mForgetPassword.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this,ForgetPasswordActivity.class);
+                Intent intent = new Intent(Login_Activity.this, Forget_Password_Activity.class);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -176,19 +191,19 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(Login_Activity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(!task.isSuccessful()){
-                                Toast.makeText(LoginActivity.this, "Sign in Failed. Please try again.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Login_Activity.this, "Sign in Failed. Please try again.", Toast.LENGTH_SHORT).show();
                             }
                             else
                             {
-                                Toast.makeText(LoginActivity.this, "Successfully signed in...", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Login_Activity.this, "Successfully signed in...", Toast.LENGTH_SHORT).show();
                                 userDashboard();
                             }
-                            }
-                        });
+                        }
+                    });
 
                 }
 
@@ -205,7 +220,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void userDashboard() {
-        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+        Intent intent = new Intent(Login_Activity.this, Main_Activity.class);
         startActivity(intent);
         finish();
     }
@@ -279,10 +294,10 @@ public class LoginActivity extends AppCompatActivity {
 
         try{
             final GoogleSignInAccount account = completeTask.getResult(ApiException.class);
+
             FirebaseGoogleAuth(account);
 
-
-            Toast.makeText(LoginActivity.this, "Signed in Successfully...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Login_Activity.this, "Signed in Successfully...", Toast.LENGTH_SHORT).show();
 
 
             /*mAuth.fetchSignInMethodsForEmail(account.getEmail()).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
@@ -309,7 +324,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         catch (ApiException e)
         {
-            Toast.makeText(LoginActivity.this, "Sign in Failed. Please try again.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Login_Activity.this, "Sign in Failed. Please try again.", Toast.LENGTH_SHORT).show();
             FirebaseGoogleAuth(null);
         }
 
@@ -351,9 +366,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser fUser) {
 
-
+        //Fix session handlings
+        if (fUser == null) {
+            return;
+        } else {
             final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-
             if (account != null) {
 
                 final String personEmail = account.getEmail();
@@ -362,15 +379,14 @@ public class LoginActivity extends AppCompatActivity {
                 final String userId = mAuth.getCurrentUser().getUid();
 
                 DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+
                 rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.hasChild("Users/"+userId)){
+                        if (dataSnapshot.hasChild("Users/" + userId)) {
                             //Toast.makeText(LoginActivity.this, "Email already exists! Please login or click forget password to reset.", Toast.LENGTH_SHORT).show();
                             return;
-                        }
-                        else
-                        {
+                        } else {
                             //create Database
                             final DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
 
@@ -380,9 +396,12 @@ public class LoginActivity extends AppCompatActivity {
                             userInfo.put("name", personName);
                             userInfo.put("email", personEmail);
                             userInfo.put("photo", personPhoto.toString());
-                            userInfo.put("age", null);
+                            userInfo.put("age", "");
                             userInfo.put("gender", gender);
+                            userInfo.put("bio", bio);
+                            userInfo.put("status", status);
                             userInfo.put("country", country);
+                            userInfo.put("countrycode", countrycode);
 
                             currentUserDb.updateChildren(userInfo);
                         }
@@ -395,8 +414,8 @@ public class LoginActivity extends AppCompatActivity {
                 });
 
 
-
             }
+        }
     }
 
 }

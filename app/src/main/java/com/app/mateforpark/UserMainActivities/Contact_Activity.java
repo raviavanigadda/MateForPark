@@ -1,4 +1,4 @@
-package com.app.mateforpark;
+package com.app.mateforpark.UserMainActivities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,11 +12,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.app.mateforpark.R;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ContactActivity extends AppCompatActivity {
-
+public class Contact_Activity extends AppCompatActivity {
     private Activity activity;
     private TextView mBack;
     @Override
@@ -119,4 +120,3 @@ public class ContactActivity extends AppCompatActivity {
         return matcher.matches();
     }
 }
-

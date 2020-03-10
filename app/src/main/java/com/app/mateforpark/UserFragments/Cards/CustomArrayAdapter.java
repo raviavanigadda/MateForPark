@@ -1,4 +1,4 @@
-package com.app.mateforpark.Fragments.Cards;
+package com.app.mateforpark.UserFragments.Cards;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.mateforpark.R;
-import com.app.mateforpark.UserProfile;
+import com.app.mateforpark.UserMainActivities.User_Profile_Activity;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -75,7 +75,7 @@ public class CustomArrayAdapter extends ArrayAdapter<Cards> {
             public void onClick(View view) {
 
                 String userId = cardItem.getUserID();
-                Intent intent = new Intent(context, UserProfile.class);
+                Intent intent = new Intent(context, User_Profile_Activity.class);
                 //Create a bundle
                 Bundle b = new Bundle();
                 //add data to bundle

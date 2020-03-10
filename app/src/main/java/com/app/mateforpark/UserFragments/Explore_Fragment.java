@@ -1,4 +1,4 @@
-package com.app.mateforpark.Fragments;
+package com.app.mateforpark.UserFragments;
 
 
 import android.os.Bundle;
@@ -23,7 +23,7 @@ import androidx.fragment.app.Fragment;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ExploreFragment extends Fragment {
+public class Explore_Fragment extends Fragment {
 
     Button mFilterButton;
     CountryCodePicker mCountryCodeFilter;
@@ -37,7 +37,7 @@ public class ExploreFragment extends Fragment {
 
 
 
-    public ExploreFragment() {
+    public Explore_Fragment() {
         // Required empty public constructor
     }
 
@@ -89,7 +89,7 @@ public class ExploreFragment extends Fragment {
                     bundle.putString("param_country",country); //send anything you want
                     bundle.putString("param_gender",gender); //send anything you want
 
-                    final HomeFragment fragment2 = new HomeFragment();
+                    final Home_Dashboard_Fragment fragment2 = new Home_Dashboard_Fragment();
                     fragment2.setArguments(bundle);
 
                     getFragmentManager().beginTransaction().replace(R.id.container,fragment2).commit();

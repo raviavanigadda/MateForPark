@@ -1,4 +1,4 @@
-package com.app.mateforpark.Fragments;
+package com.app.mateforpark.UserFragments;
 
 
 import android.content.Intent;
@@ -12,9 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.app.mateforpark.LoginActivity;
+import com.app.mateforpark.UserMainActivities.Login_Activity;
 import com.app.mateforpark.R;
-import com.app.mateforpark.UserProfileSettingsActivity;
+import com.app.mateforpark.UserMainActivities.User_Settings_Activity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -37,7 +37,7 @@ import androidx.fragment.app.Fragment;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AccountFragment extends Fragment {
+public class View_Account_Settings_Fragment extends Fragment {
 
     LinearLayout profileSettings, logoutSettings;
     private FirebaseAuth mAuth;
@@ -47,7 +47,7 @@ public class AccountFragment extends Fragment {
     private String currentUId, username;
     TextView mAccountName;
 
-    public AccountFragment() {
+    public View_Account_Settings_Fragment() {
         // Required empty public constructor
     }
 
@@ -77,7 +77,7 @@ public class AccountFragment extends Fragment {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if(user != null){
-                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    Intent intent = new Intent(getActivity(), Login_Activity.class);
                     startActivity(intent);
                 }
             }
@@ -113,7 +113,7 @@ public class AccountFragment extends Fragment {
         profileSettings.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), UserProfileSettingsActivity.class);
+                Intent intent = new Intent(getActivity(), User_Settings_Activity.class);
 
                 startActivity(intent);
             }
@@ -130,7 +130,7 @@ public class AccountFragment extends Fragment {
                 mGoogleSignInClient.signOut();
 
                 Toast.makeText(getActivity(), "Logged out successfully", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                Intent intent = new Intent(getActivity(), Login_Activity.class);
                 startActivity(intent);
 
                getActivity().finish();

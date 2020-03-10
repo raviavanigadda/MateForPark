@@ -1,4 +1,4 @@
-package com.app.mateforpark;
+package com.app.mateforpark.UserMainActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.app.mateforpark.R;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -20,7 +21,7 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class UserProfile extends AppCompatActivity {
+public class User_Profile_Activity extends AppCompatActivity {
 
     private String username, usercountry, useremail, usergender, userage, userimage;
     private TextView tvname, tvcountry, tvemail, tvgender, tvage, mBack;
