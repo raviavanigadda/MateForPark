@@ -22,12 +22,11 @@ public class CustomArrayAdapter extends ArrayAdapter<Cards> {
 
     //which will pass inside the arrayadapter
     private Context context;
-    private CustomArrayAdapter arrayAdapter;
     List<Cards> rowItems;
     private List<Cards> items;
     private int item;
-    TextView name,age,country;
-    Button mRightButton,mLeftButton;
+    TextView name,age,country,bio;
+
 
     //when we start populating the cards right in the beginning
     public CustomArrayAdapter(Context context, int resourceId, List<Cards> items) {
@@ -59,9 +58,9 @@ public class CustomArrayAdapter extends ArrayAdapter<Cards> {
         name = convertView.findViewById(R.id.name);
         age = convertView.findViewById(R.id.age);
         country = convertView.findViewById(R.id.country);
+        bio = convertView.findViewById(R.id.bio);
 
-       // mLeftButton = convertView.findViewById(R.id.leftSwipe);
-       // mRightButton = convertView.findViewById(R.id.rightSwipe);
+
 
         ImageView image = convertView.findViewById(R.id.Cardimage);
 
@@ -69,8 +68,9 @@ public class CustomArrayAdapter extends ArrayAdapter<Cards> {
         name.setText(cardItem.getUserName());
         age.setText(cardItem.getUserAge());
         country.setText(cardItem.getUserCountry());
+        bio.setText(cardItem.getUserBio());
 
-        name.setOnClickListener(new OnClickListener() {
+        image.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -100,10 +100,8 @@ public class CustomArrayAdapter extends ArrayAdapter<Cards> {
 
         }
 
-
-        //  image.setImageResource(R.mipmap.ic_launcher);
-
         return convertView;
     }
 }
+
 

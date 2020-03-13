@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@id/container"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:weightSum="1"
         android:orientation="horizontal">
@@ -19,25 +19,14 @@
             android:layout_gravity="center"
             android:layout_margin="5dp"
             android:paddingLeft="10dp"
-            android:gravity="start|bottom"
+            android:gravity="start|center"
             android:layout_height="match_parent"
             android:text="Text"
             android:padding="5sp"
+            android:textSize="20dp"
+            android:fontFamily="sans-serif-black"
             android:id="@+id/userMessage"
             />
-
-        <ImageView
-            android:id="@+id/chatProfileImage"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="end"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/default_image"
-            android:layout_marginBottom="10dp"
-            android:visibility="gone"/>
-
 
     </LinearLayout>
 </LinearLayout>

@@ -1,17 +1,22 @@
 package com.app.mateforpark.UserFragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.app.mateforpark.UserFragments.Cards.Cards;
 import com.app.mateforpark.UserFragments.Cards.CustomArrayAdapter;
 import com.app.mateforpark.R;
+import com.app.mateforpark.UserMainActivities.User_Settings_Activity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -34,22 +39,25 @@ public class Home_Dashboard_Fragment extends Fragment{
 
     private CustomArrayAdapter arrayAdapter;
     private FirebaseAuth mAuth;
-
+    ViewFlipper v_flipper;
     private String currentUId;
     private String userGender;
     private String otheruserGender;
-    Button mRightButton,mLeftButton;
+    Button mRightButton,mLeftButton, mSettings;
     TextView mTextDisplay, mUserName;
+    private RelativeLayout rl_flipper;
+    ImageView onHomeEmpty, onGmailFirst;
 
-
-    public DatabaseReference usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
-
+    public DatabaseReference senderDb, receiverDb;
+    private DatabaseReference usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
+    //int images[] = {R.drawable.image, R.drawable.image1, R.drawable.image1};
     List<Cards> rowItems;
     private Object dataObject;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
     }
 
@@ -65,37 +73,36 @@ public class Home_Dashboard_Fragment extends Fragment{
 
         final SwipeFlingAdapterView flingContainer = getView().findViewById(R.id.frame);
 
+        mAuth = FirebaseAuth.getInstance();
 
-       mLeftButton = getView().findViewById(R.id.leftSwipe);
-       mRightButton = getView().findViewById(R.id.rightSwipe);
-       mTextDisplay = getView().findViewById(R.id.errorHome);
-       mAuth = FirebaseAuth.getInstance();
+        mTextDisplay = getView().findViewById(R.id.errorHome);
+        //onHomeEmpty = getView().findViewById(R.id.home_empty);
+        onGmailFirst = getView().findViewById(R.id.gmail_first);
+        //rl_flipper = getView().findViewById(R.id.rl_flipper);
+        mSettings = getView().findViewById(R.id.editprofile);
+        currentUId = mAuth.getCurrentUser().getUid();
+        rowItems = new ArrayList<Cards>();
+        arrayAdapter = new CustomArrayAdapter(getActivity(), R.layout.item, rowItems);
 
-       currentUId = mAuth.getCurrentUser().getUid();
+        //for Filtering the profiles
+        Bundle bundle = this.getArguments();
 
+        if(bundle != null)
+        {
+            String value = bundle.getString("param_country");
+            String value1 = bundle.getString("param_gender");
+            filterUsers(value, value1);
+            //Toast.makeText(getActivity(), "Data are "+value+" "+ value1, Toast.LENGTH_SHORT).show();
 
+        }
+        else
+        {
+            checkUserGender();
+        }
 
-       rowItems = new ArrayList<Cards>();
+        flingContainer.setAdapter(arrayAdapter);
 
-       arrayAdapter = new CustomArrayAdapter(getActivity(), R.layout.item, rowItems);
-
-       Bundle bundle = this.getArguments();
-
-       if(bundle != null)
-       {
-           String value = bundle.getString("param_country");
-           String value1 = bundle.getString("param_gender");
-
-           filterUsers(value, value1);
-           Toast.makeText(getActivity(), "Data are "+value+" "+ value1, Toast.LENGTH_SHORT).show();
-       }
-       else
-       {
-           checkUserGender();
-       }
-
-       flingContainer.setAdapter(arrayAdapter);
-       flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
+        flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
 
             @Override
             public void removeFirstObjectInAdapter() {
@@ -120,6 +127,7 @@ public class Home_Dashboard_Fragment extends Fragment{
             public void onRightCardExit(Object dataObject) {
 
                 refreshFragmentUI(Home_Dashboard_Fragment.this);
+
                 Cards obj = (Cards) dataObject;
                 String userId = obj.getUserID();
                 usersDb.child(userId).child("connections").child("accept").child(currentUId).setValue(true);
@@ -129,24 +137,7 @@ public class Home_Dashboard_Fragment extends Fragment{
 
             @Override
             public void onAdapterAboutToEmpty(int i) {
-
-
-
-                if(i==0){
-
-                    mRightButton.setVisibility(View.GONE);
-                    mLeftButton.setVisibility(View.GONE);
-                    mTextDisplay.setVisibility(View.VISIBLE);
-
-                }
-                else
-                {
-                    mRightButton.setVisibility(View.VISIBLE);
-                    mLeftButton.setVisibility(View.VISIBLE);
-                    mTextDisplay.setVisibility(View.GONE);
-
-                }
-
+                // refreshFragmentUI(Home_Dashboard_Fragment.this);
             }
 
 
@@ -185,6 +176,7 @@ public class Home_Dashboard_Fragment extends Fragment{
 
 
 
+/*
         mRightButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -200,9 +192,24 @@ public class Home_Dashboard_Fragment extends Fragment{
                 arrayAdapter.notifyDataSetChanged();
             }
         });
-
+*/
     }
 
+    //Image slider
+   /* public void flipperImages(int image){
+        ImageView imageView = new ImageView(getContext());
+        imageView.setBackgroundResource(image);
+
+        v_flipper.addView(imageView);
+        v_flipper.setFlipInterval(4000);
+        v_flipper.setAutoStart(true);
+
+        v_flipper.setInAnimation(getContext(),android.R.anim.slide_in_left);
+        v_flipper.setOutAnimation(getContext(),android.R.anim.slide_out_right);
+
+    }
+*/
+    //For filtering single user
     private void filterUsers(final String country, final String gender) {
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -217,7 +224,7 @@ public class Home_Dashboard_Fragment extends Fragment{
 
                     if (dataSnapshot.child("gender").getValue() != null) {
 
-                       // userGender = dataSnapshot.child("gender").getValue().toString();
+                        //userGender = dataSnapshot.child("gender").getValue().toString();
 
                         switch (gender) {
                             case "Male":
@@ -226,17 +233,13 @@ public class Home_Dashboard_Fragment extends Fragment{
                             case "Female":
                                 otheruserGender = "Female";
                                 break;
+                            case "Others":
+                                otheruserGender = "Others";
+                                break;
 
                         }
 
-                        if(dataSnapshot.child("gender").getValue().equals("Do not specify")){
-                            Toast.makeText(getActivity(), "Please change your gender to view profiles!", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        else
-                        {
-                            getFilterOppositeUsers(country);
-                        }
+                        getFilterOppositeUsers(country);
 
                     }
                 }
@@ -249,7 +252,6 @@ public class Home_Dashboard_Fragment extends Fragment{
         });
 
     }
-
 
 
     private void checkUserGender() {
@@ -273,15 +275,31 @@ public class Home_Dashboard_Fragment extends Fragment{
                             case "Female":
                                 otheruserGender = "Male";
                                 break;
+                            case "Others":
+                                otheruserGender = "Others";
+                                break;
 
                         }
 
                         if(dataSnapshot.child("gender").getValue().equals("Do not specify")){
-                            Toast.makeText(getActivity(), "Please change your gender to view profiles!", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getActivity(), "Please change your gender to view profiles!", Toast.LENGTH_SHORT).show();
+
+                            mSettings.setVisibility(View.VISIBLE);
+                            //  onGmailFirst.setVisibility(View.GONE);
+                            mSettings.setOnClickListener(new OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(getActivity(), User_Settings_Activity.class);
+                                    startActivity(intent);
+                                }
+                            });
+
                             return;
                         }
                         else
+
                         {
+                            mSettings.setVisibility(View.GONE);
                             getOppositeGenderUsers();
                         }
 
@@ -312,10 +330,15 @@ public class Home_Dashboard_Fragment extends Fragment{
                         profileImageUrl = dataSnapshot.child("photo").getValue().toString();
                     }
 
+                    String bio="";
 
+                    if(!dataSnapshot.child("bio").getValue().equals(null)){
+                        bio = dataSnapshot.child("bio").getValue().toString();
+                    }
                     //adds name and profile to the card from the database
                     Cards item = new Cards(dataSnapshot.getKey(), dataSnapshot.child("name").getValue().toString(),
-                            profileImageUrl, dataSnapshot.child("age").getValue().toString(),dataSnapshot.child("country").getValue().toString());
+                            profileImageUrl, dataSnapshot.child("age").getValue().toString(),dataSnapshot.child("country").getValue().toString()
+                            ,bio);
 
                     rowItems.add(item);
 
@@ -356,8 +379,8 @@ public class Home_Dashboard_Fragment extends Fragment{
                 if(dataSnapshot.exists() && !dataSnapshot.child("connections").child("decline").hasChild(currentUId) &&
                         !dataSnapshot.child("connections").child("accept").hasChild(currentUId) &&
                         dataSnapshot.child("gender").getValue().toString().equals(otheruserGender) &&
-                !dataSnapshot.getKey().equals(currentUId) &&
-                dataSnapshot.child("country").getValue().toString().equals(country)){
+                        !dataSnapshot.getKey().equals(currentUId) &&
+                        dataSnapshot.child("country").getValue().toString().equals(country)){
 
                     String profileImageUrl = "default";
 
@@ -369,7 +392,8 @@ public class Home_Dashboard_Fragment extends Fragment{
 
                     //adds name and profile to the card from the database
                     Cards item = new Cards(dataSnapshot.getKey(), dataSnapshot.child("name").getValue().toString(),
-                            profileImageUrl, dataSnapshot.child("age").getValue().toString(),dataSnapshot.child("country").getValue().toString());
+                            profileImageUrl, dataSnapshot.child("age").getValue().toString(),dataSnapshot.child("country").getValue().toString()
+                            ,dataSnapshot.child("bio").getValue().toString());
 
                     rowItems.add(item);
 
@@ -402,9 +426,11 @@ public class Home_Dashboard_Fragment extends Fragment{
     }
 
 
-    public void isConnectionMatch(String userId) {
+    public void isConnectionMatch(final String userId) {
 
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        //for Accept Data
         DatabaseReference  currentUserConnectionDb = usersDb.child(currentUId).child("connections").child("accept").child(userId);
 
         currentUserConnectionDb.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -412,16 +438,23 @@ public class Home_Dashboard_Fragment extends Fragment{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
 
-                    Toast.makeText(getActivity(), "New Match!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "You are Matched!", Toast.LENGTH_SHORT).show();
 
                     //for chat id
                     String key = FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();
 
                     //usersDb.child(dataSnapshot.getKey()).child("connections").child("matches").child(currentUId).setValue(true);
+
+                    //For other user
+                    usersDb.child(dataSnapshot.getKey()).child("connections").child("matches").child(currentUId).child("chatId").setValue(key);
                     usersDb.child(dataSnapshot.getKey()).child("connections").child("matches").child(currentUId).child("chatId").setValue(key);
 
+
                     //usersDb.child(currentUId).child("connections").child("matches").child(dataSnapshot.getKey()).setValue(true);
+                    // For Current user
                     usersDb.child(currentUId).child("connections").child("matches").child(dataSnapshot.getKey()).child("chatId").setValue(key);
+                    usersDb.child(dataSnapshot.getKey()).child("connections").child("matches").child(currentUId).child("chatId").setValue(key);
+
 
                 }
 

@@ -1,13 +1,17 @@
 package com.app.mateforpark.UserFragments.Chat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.app.mateforpark.R;
+import com.app.mateforpark.UserMainActivities.User_Profile_Activity;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -30,17 +34,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ChatActivity extends AppCompatActivity {
 
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mChatAdapter;
     private RecyclerView.LayoutManager mChatLayoutManager;
-
+    String currentPhotoURL, matchPhotoURL;
     private EditText mSendEditText;
-    private Button mSendButton;
+    private TextView mMatchName;
+    private ImageButton mSendButton, mBackButton, mViewProfile;
+    int position;
+    private String currentUserId, matchId, chatId, senderImageUrl, receiverImgUrl;
 
-    private String currentUserId, matchId, chatId, usersImageUrl, otherImgUrl;
-    private ImageView mChatProfileImage;
+    DatabaseReference mDatabaseUser,mDatabaseChat, mDatabaseProfile,mDatabaseMatchProfile;
 
-    DatabaseReference mDatabaseUser,mDatabaseChat, mDatabasePhoto, mDatabaseOtherMatchId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,14 +57,17 @@ public class ChatActivity extends AppCompatActivity {
 
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        mDatabaseUser = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId).child("connections").child("matches").child(matchId).child("chatId");
 
+        mDatabaseUser = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId).child("connections").child("matches").child(matchId).child("chatId");
         mDatabaseChat = FirebaseDatabase.getInstance().getReference().child("Chat");
 
-        getChatId();
+        mDatabaseProfile = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId).child("photo");
 
+        mDatabaseMatchProfile = FirebaseDatabase.getInstance().getReference().child("Users").child(matchId);
 
         mRecyclerView = findViewById(R.id.recyclerView);
+        mBackButton = findViewById(R.id.back);
+        mViewProfile = findViewById(R.id.viewmatchprofile);
 
         //allows to scroll freely through recycler view with no hickups
         mRecyclerView.setNestedScrollingEnabled(false);
@@ -68,10 +78,48 @@ public class ChatActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mChatLayoutManager);
 
         mChatAdapter = new ChatAdapter(getDataSetChat(), ChatActivity.this);
-        mRecyclerView.setAdapter(mChatAdapter);
 
+        mRecyclerView.setAdapter(mChatAdapter);
         mSendButton = findViewById(R.id.send);
         mSendEditText = findViewById(R.id.editTextMessage);
+        mMatchName = findViewById(R.id.matchName);
+
+        mDatabaseMatchProfile.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                {
+                    String username;
+                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+
+                    if (map.get("name") != null) {
+                        username = map.get("name").toString();
+                        mMatchName.setText(username);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        mViewProfile.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), User_Profile_Activity.class);
+                //Create a bundle
+                Bundle b = new Bundle();
+                //add data to bundle
+                b.putString("id",matchId);
+                intent.putExtras(b);
+                view.getContext().startActivity(intent);
+            }
+        });
+
+        getChatId();
 
 
         mSendButton.setOnClickListener(new OnClickListener() {
@@ -81,6 +129,12 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        mBackButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
 
     }
@@ -92,14 +146,18 @@ public class ChatActivity extends AppCompatActivity {
             DatabaseReference newMessageDb = mDatabaseChat.push();
 
             Map newMessage = new HashMap();
-            newMessage.put("createdByUser", currentUserId);
-            newMessage.put("text", sendMessageText);
+            newMessage.put("senderId", currentUserId);
+            newMessage.put("message", sendMessageText);
+
+            // newMessage.put("senderUrl", sendMessageText);
+            // newMessage.put("receiverUrl", sendMessageText);
 
             newMessageDb.setValue(newMessage);
         }
 
         // to clear added text to null
         mSendEditText.setText(null);
+        mRecyclerView.scrollToPosition(position);
 
     }
 
@@ -110,44 +168,25 @@ public class ChatActivity extends AppCompatActivity {
                 if(dataSnapshot.exists()){
                     chatId = dataSnapshot.getValue().toString();
                     mDatabaseChat = mDatabaseChat.child(chatId);
-
                     //after getting chat id get the messages
                     getChatMessages();
+                    // getImage();
                 }
             }
-
-
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-    }
 
-    private void getOppositeUserImage(){
-
-        mDatabasePhoto.addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabaseProfile.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
-                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                if(dataSnapshot.exists())
+                {
+                    currentPhotoURL = dataSnapshot.getValue(String.class);
 
-                    if (map.get("photo") != null) {
-                        usersImageUrl = map.get("photo").toString();
 
-                        switch (usersImageUrl) {
-
-                            case "default":
-                                Glide.with(getApplication()).load(R.drawable.default_image).into(mChatProfileImage);
-                                break;
-                            default:
-                                Glide.with(getApplication()).load(usersImageUrl).into(mChatProfileImage);
-                                break;
-
-                        }
-
-                    }
                 }
             }
 
@@ -156,8 +195,9 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
-    }
 
+
+    }
 
 
     private void getChatMessages() {
@@ -168,12 +208,12 @@ public class ChatActivity extends AppCompatActivity {
                     String message = null;
                     String createdByUser = null;
 
-                    if(dataSnapshot.child("text").getValue()!= null){
-                        message = dataSnapshot.child("text").getValue().toString();
+                    if(dataSnapshot.child("message").getValue()!= null){
+                        message = dataSnapshot.child("message").getValue().toString();
                     }
 
-                    if(dataSnapshot.child("createdByUser").getValue()!= null){
-                        createdByUser = dataSnapshot.child("createdByUser").getValue().toString();
+                    if(dataSnapshot.child("senderId").getValue()!= null){
+                        createdByUser = dataSnapshot.child("senderId").getValue().toString();
 
                     }
 

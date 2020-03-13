@@ -278,7 +278,7 @@ public class Register_Activity extends AppCompatActivity {
             super.onPostExecute(aVoid);
             outAnimation = new AlphaAnimation(1f, 0f);
             outAnimation.setDuration(300);
-           
+
             mSignup.setEnabled(true);
         }
 

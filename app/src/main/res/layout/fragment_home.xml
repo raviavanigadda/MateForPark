@@ -62,7 +62,7 @@
                 android:backgroundTint="@color/white"
                 app:max_visible="3"
                 app:min_adapter_stack="1"
-                app:rotation_degrees="8"
+                app:rotation_degrees="-5"
                />
 
             <Button

@@ -86,7 +86,7 @@ public class ChatListFragment extends Fragment {
                     mErrorDisplay.setVisibility(View.GONE);
                 }
                 else{
-                        mErrorDisplay.setVisibility(View.VISIBLE);
+                    mErrorDisplay.setVisibility(View.VISIBLE);
                 }
             }
 

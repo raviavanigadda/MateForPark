@@ -5,17 +5,10 @@ public class Cards {
     private String userID;
     private String userName;
 
-    public Cards(String userID, String userName, String photoUrl) {
-        this.userID = userID;
-        this.userName = userName;
-        this.photoUrl = photoUrl;
-    }
-
-
-
     private String photoUrl;
     private String userAge;
     private String userCountry;
+    private String userBio;
 
     public String getUserID() {
         return userID;
@@ -57,13 +50,20 @@ public class Cards {
         this.userCountry = userCountry;
     }
 
-    public Cards(String userID, String userName, String photoUrl, String userAge, String userCountry) {
+    public String getUserBio() {
+        return userBio;
+    }
+
+    public void setUserBio(String userBio) {
+        this.userBio = userBio;
+    }
+
+    public Cards(String userID, String userName, String photoUrl, String userAge, String userCountry, String userBio) {
         this.userID = userID;
         this.userName = userName;
         this.photoUrl = photoUrl;
         this.userAge = userAge;
         this.userCountry = userCountry;
+        this.userBio = userBio;
     }
-
-    ;
 }
